@@ -1,9 +1,14 @@
 <?php
-//session_start();
-$conn = new mysqli('localhost', 'root', '', '2906898_mpcdatabase');
+session_start();
 
-	if ($conn->connect_error) {
-	    die("Connection failed: " . $conn->connect_error);
-	}
-	
+$host = getenv('DB_HOST');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$database = getenv('DB_DATABASE');
+
+$conn = new mysqli($host, $user, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 ?>
