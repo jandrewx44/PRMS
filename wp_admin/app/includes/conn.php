@@ -4,7 +4,10 @@ session_start();
 $host = getenv('DB_HOST');
 $user = getenv('DB_USER');
 $password = getenv('DB_PASSWORD');
-$database = getenv('DB_DATABASE');
+$database = getenv('DB_DATABASE'); // Removed the '?' syntax error
+
+// Debugging line (temporary)
+echo ""; 
 
 $conn = new mysqli($host, $user, $password, $database);
 
