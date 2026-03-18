@@ -106,16 +106,11 @@
 					$total_no_of_pages = ceil($total_records / $total_records_per_page);
 					$second_last = $total_no_of_pages - 1; // total page minus 1
 		
-					$news = "SELECT *,COUNT(DATE_OF_BIRTH) As tTotal, DATE_FORMAT(DATE_OF_BIRTH, '%Y') As tDate FROM tbl_baptismal GROUP BY tDate DESC LIMIT $offset, $total_records_per_page"; 
-					$news_run=$conn->query($news);
-					if($news_run -> num_rows >0){
-					foreach($news_run as $value){
-						if($value['tDate']==""){
-								$group='NULL';
-							}else{
-								$group=$value['tDate'];
-							}
-					
+						query = "SELECT * FROM tbl_baptismal ORDER BY created_at DESC LIMIT 0, 24";
+					$result = @conn->query(@query);
+					if (!result){
+						die("Query Failed: " . >conn->error);}
+						
 				?>
                     	<div class="col-lg-2 col-4">
 						<!-- small box -->
