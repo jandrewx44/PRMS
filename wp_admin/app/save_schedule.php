@@ -1,8 +1,7 @@
 <?php 
 require_once('includes/conn.php');
-session_start();
 if($_SERVER['REQUEST_METHOD'] !='POST'){
-	 $_SESSION['error'] = 'Error: No data to save.';
+ 	 $_SESSION['error'] = 'Error: No data to save.';
     $conn->close();
     exit;
 }
