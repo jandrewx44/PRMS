@@ -74,33 +74,31 @@
                   $next_page = $page_no + 1;
                   $adjacents = "2"; 
 
-                  // Count total records safely for MySQL 8.0
-                  $result_count = mysqli_query($conn,"SELECT COUNT(*) As total_records FROM tbl_baptismal");
+                  // Count distinct years for grouped year cards
+                  $result_count = mysqli_query($conn,"SELECT COUNT(DISTINCT DATE_FORMAT(DATE_OF_BAPTISM, '%Y')) As total_records FROM tbl_baptismal");
                   $total_records_data = mysqli_fetch_array($result_count);
                   $total_records = $total_records_data['total_records'];
                   $total_no_of_pages = ceil($total_records / $total_records_per_page);
                   $second_last = $total_no_of_pages - 1;
 
-                  // Fetch actual records
-                  $query = "SELECT * FROM tbl_baptismal ORDER BY created_at DESC LIMIT $offset, $total_records_per_page";
+                  // Fetch one card per year
+                  $query = "SELECT COUNT(DATE_OF_BAPTISM) As tTotal, DATE_FORMAT(DATE_OF_BAPTISM, '%Y') As tDate FROM tbl_baptismal GROUP BY DATE_FORMAT(DATE_OF_BAPTISM, '%Y') ORDER BY DATE_FORMAT(DATE_OF_BAPTISM, '%Y') DESC LIMIT $offset, $total_records_per_page";
                   $result = $conn->query($query);
 
                   if ($result && $result->num_rows > 0) {
                       while($row = $result->fetch_assoc()) {
-                          $child_name = $row['CHILD_NAME'];
-                          $id = $row['ID'];
-                          $year = date('Y', strtotime($row['DATE_OF_BAPTISM']));
+                          $year = $row['tDate'] == "" ? 'NULL' : $row['tDate'];
                 ?>
                     <div class="col-lg-2 col-4">
                       <div class="small-box bg-gradient-info">
                         <div class="inner">
-                          <h4 style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= $child_name; ?></h4>
-                          <p><span class="badge bg-gradient-maroon">Year: <?= $year; ?></span></p>
+                          <h4><?= $year; ?></h4>
+                          <p><span class="badge bg-gradient-maroon"><?= $row['tTotal']; ?></span></p>
                         </div>
                         <div class="icon">
                           <i class="ion ion-person"></i>
                         </div>
-                        <a href="baptismal_acView.php?id=<?= base64_encode(urlencode($id)); ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="baptismal_acView.php?year=<?= $year; ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                       </div>
                     </div>
                 <?php 
