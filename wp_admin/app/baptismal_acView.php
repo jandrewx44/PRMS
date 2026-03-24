@@ -91,7 +91,7 @@
 						$sql = "SELECT * FROM tbl_baptismal ORDER BY CHILD_NAME ASC";
 						$query = $conn->query($sql);
 					}else{
-						$sql = "SELECT * FROM tbl_baptismal WHERE DATE_FORMAT(DATE_OF_BIRTH, '%Y')='".$ShowYear."' ORDER BY CHILD_NAME ASC";
+						$sql = "SELECT * FROM tbl_baptismal WHERE DATE_FORMAT(DATE_OF_BAPTISM, '%Y')='".$ShowYear."' ORDER BY CHILD_NAME ASC";
 						$query = $conn->query($sql);
 					}
                     
