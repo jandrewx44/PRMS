@@ -1,10 +1,10 @@
 <?php
 	//ob_start();
 	error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+	include "wp_admin/app/includes/conn.php";
 	if(!isset($_SESSION['admin']) || trim($_SESSION['admin']) == ''){
 		header("location:404.php?404");
 	}
-	include "wp_admin/app/includes/conn.php";
     $stmt =$conn->prepare("SELECT * FROM tbl_appointment WHERE APP_ID=?");
     $stmt->bind_param('s',$_SESSION['admin']);
     if($stmt->execute()){
