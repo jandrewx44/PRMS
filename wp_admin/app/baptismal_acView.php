@@ -86,8 +86,7 @@
                   </thead>
                   <tbody>
 					<?php
-					$ShowYear='';
-					$ShowYear = $_GET['year'];
+					$ShowYear = isset($_GET['year']) ? $_GET['year'] : 'NULL';
 					if($ShowYear=='NULL'){
 						$sql = "SELECT * FROM tbl_baptismal WHERE DATE_OF_BIRTH='".$ShowYear."' ORDER BY CHILD_NAME ASC";
 						$query = $conn->query($sql);
