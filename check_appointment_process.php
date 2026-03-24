@@ -1,6 +1,6 @@
 <?php
 	//ob_start();
-	session_start();
+	error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 	if(!isset($_SESSION['admin']) || trim($_SESSION['admin']) == ''){
 		header("location:404.php?404");
 	}
@@ -86,10 +86,8 @@ $sql = "SELECT * FROM tbl_system_setting";
 $query = $conn->query($sql);
 if($query->num_rows > 0){
     $logo_setting = $query->fetch_assoc();
-    $right_logo = 'logo_right.jpg';
-    file_put_contents($right_logo, $logo_setting['SYS_LOGO']);
-	$logo_left = 'logo_left.jpg';
-    file_put_contents($logo_left, $logo_setting['SYS_SECOND_LOGO']);
+    $right_logo = !empty($logo_setting['SYS_LOGO']) ? '@' . $logo_setting['SYS_LOGO'] : '';
+	$logo_left = !empty($logo_setting['SYS_SECOND_LOGO']) ? '@' . $logo_setting['SYS_SECOND_LOGO'] : '';
 	
 	$SYS_ADDRESS=$logo_setting['SYS_ADDRESS'];
 	$SYS_DIOCESE=$logo_setting['SYS_DIOCESE'];
@@ -101,10 +99,11 @@ if($query->num_rows > 0){
 	
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 	$pdf->AddPage(); 
-	$pdf->SetAlpha(0.1);
-	$img_file = file_get_contents($logo_left);
-	$pdf->Image('@' . $img_file, 25, 40, 150, '', '', '', '', false, 50, 'C', false);
-	$pdf->SetAlpha(1);
+	if($logo_left !== ''){
+		$pdf->SetAlpha(0.1);
+		$pdf->Image($logo_left, 25, 40, 150, '', '', '', '', false, 50, 'C', false);
+		$pdf->SetAlpha(1);
+	}
 	
   $style = array(
     'position' => '',
@@ -129,7 +128,7 @@ $contents = '
 <table width="100%">
  <tr>
 <td align="left" width="20%">
-<img src="'.$right_logo.'" alt="" class="float-left" width="80">
+'.($right_logo !== '' ? '<img src="'.$right_logo.'" alt="" class="float-left" width="80">' : '').'
 </td>
  <td align="center" width="60%">
 <span style="text-transform:uppercase">'.$SYS_DIOCESE.'</span><br>
@@ -140,7 +139,7 @@ $contents = '
 <br>
 </td>
 <td align="right" width="20%">
-<img src="'.$logo_left.'" alt="" class="float-left" width="80">
+'.($logo_left !== '' ? '<img src="'.$logo_left.'" alt="" class="float-left" width="80">' : '').'
 </td>
 </tr>
 </table>
@@ -201,7 +200,9 @@ $contents = '
     ';
     $pdf->writeHTML($contents);  
     //$pdf->writeHTML($contents,true, false, true, false, '');
-    ob_end_clean();
+    if (ob_get_length()) {
+      ob_end_clean();
+    }
     $pdf->Output('_receipt.pdf', 'I');
 
 ?>
