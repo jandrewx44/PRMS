@@ -2,7 +2,7 @@
 if (empty($_SESSION['token'])) {
   $_SESSION['token'] = bin2hex(random_bytes(32));
  }
- $link="";
+ $appointment_result = null;
  if(isset($_POST['search'])){
    //Verifying CSRF Token
    if (!empty($_POST['csrftoken'])) {
@@ -17,13 +17,12 @@ if (empty($_SESSION['token'])) {
        $result =$stmt->get_result();
        if($result->num_rows >0){
          $row=$result->fetch_assoc();
-         $_SESSION['admin'] = $row['APP_ID'];
-         $link='check_appointment_process.php?AUTO_NUMBER='.$AUTO_NUMBER.'&FIRSTNAME='.$FIRSTNAME.'&LASTNAME='.$LASTNAME.'';
-         $_SESSION['success']="1 result's found!";
-       }else{
-         $link="No result";
-         $_SESSION['error']="No record found";
-       }
+          $_SESSION['admin'] = $row['APP_ID'];
+          $appointment_result = $row;
+          $_SESSION['success']="1 result's found!";
+        }else{
+          $_SESSION['error']="No record found";
+        }
        }
  
    }
@@ -125,21 +124,24 @@ if (empty($_SESSION['token'])) {
 							  }
 							  ?>
 								</h4>
-                <div class="embed-responsive embed-responsive-16by9">
-              <?php if($link==""){
-                ?>
-                <iframe class="embed-responsive-item" src="" allowfullscreen></iframe>
-                  <div class="rounded">
-                  <iframe class="rounded w-100 embed-responsive-item" 
-                  style="height: 1000px;" src="" 
-                  loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <?php if($appointment_result !== null){ ?>
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body p-4">
+                    <div class="mb-3">
+                      <small class="text-muted d-block">REFERENCE NUMBER</small>
+                      <strong><?=htmlentities($appointment_result['AUTO_NUMBER']); ?></strong>
+                    </div>
+                    <div class="mb-3">
+                      <small class="text-muted d-block">NAME</small>
+                      <strong><?=htmlentities($appointment_result['LASTNAME'].', '.$appointment_result['FIRSTNAME'].' '.$appointment_result['MIDDLENAME']); ?></strong>
+                    </div>
+                    <div>
+                      <small class="text-muted d-block">STATUS</small>
+                      <strong><?=htmlentities($appointment_result['APP_STATUS']); ?></strong>
+                    </div>
+                  </div>
                 </div>
-              <?php }else{?>
-              <iframe class="rounded w-100 embed-responsive-item" 
-                style="height: 820px;" src="<?=$link;?>" 
-                loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen="true"></iframe>
-              <?php } ?>
-            </div>
+                <?php } ?>
             </div>
 
 
