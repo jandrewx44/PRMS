@@ -99,13 +99,13 @@
 					$next_page = $page_no + 1;
 					$adjacents = "2"; 
 
-					$result_count = mysqli_query($conn,"SELECT COUNT(*) As total_records, DATE_FORMAT(DATE_OF_BIRTH, '%Y') As tDate FROM tbl_conversion");
+					$result_count = mysqli_query($conn,"SELECT COUNT(DISTINCT DATE_FORMAT(DATE_OF_BIRTH, '%Y')) As total_records FROM tbl_conversion");
 					$total_records = mysqli_fetch_array($result_count);
 					$total_records = $total_records['total_records'];
 					$total_no_of_pages = ceil($total_records / $total_records_per_page);
 					$second_last = $total_no_of_pages - 1; // total page minus 1
 		
-					$news = "SELECT *,COUNT(DATE_OF_BIRTH) As tTotal, DATE_FORMAT(DATE_OF_BIRTH, '%Y') As tDate FROM tbl_conversion GROUP BY tDate DESC LIMIT $offset, $total_records_per_page"; 
+					$news = "SELECT COUNT(DATE_OF_BIRTH) As tTotal, DATE_FORMAT(DATE_OF_BIRTH, '%Y') As tDate FROM tbl_conversion GROUP BY DATE_FORMAT(DATE_OF_BIRTH, '%Y') ORDER BY DATE_FORMAT(DATE_OF_BIRTH, '%Y') DESC LIMIT $offset, $total_records_per_page"; 
 					$news_run=$conn->query($news);
 					if($news_run -> num_rows >0){
 					foreach($news_run as $value){
