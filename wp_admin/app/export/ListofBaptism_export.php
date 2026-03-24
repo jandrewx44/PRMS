@@ -6,8 +6,11 @@ $query ="SELECT `RECORD_NUMBER`,`BOOK_NO`,`PAGE_NO`,`REG_NO`,`SERIES_NO`, `CHILD
 $result = mysqli_query($conn,$query);
 $file_arr = array();
 
-// file creation
-$file = fopen($filename,"w");
+header("Content-Description: File Transfer");
+header("Content-Disposition: attachment; filename=\"$filename\"");
+header("Content-Type: text/csv; charset=UTF-8");
+
+$file = fopen("php://output","w");
 
 $file_arr = array("RECORD NUMBER","BOOK_NO","PAGE_NO","REG_NO","SERIES_NO","NAME OF CHILD","GENDER","DATE OF BIRTH","PLACE OF BIRTH","NAME OF FATHER","NAME OF MOTHER","NAME OF PRIEST","NAME OF CHURCH","DATE ADDED"); 
 fputcsv($file,$file_arr); 
@@ -32,14 +35,4 @@ while($row = mysqli_fetch_assoc($result)){
 }
 
 fclose($file); 
-
-// download
-header("Content-Description: File Transfer");
-header("Content-Disposition: attachment; filename=$filename");
-header("Content-Type: application/csv; "); 
-
-readfile($filename);
-
-// deleting file
-unlink($filename);
 exit();
