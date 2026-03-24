@@ -10,7 +10,7 @@
 		$sms_time=$_POST['sms_time'];
 		$sms_number=$_POST['sms_number'];
 		$sms_name=$_POST['sms_name'];
-		$MOBILE=$_POST['sms_mobile'];
+		$MOBILE=trim($_POST['sms_mobile']);
 		$stmt="UPDATE tbl_appointment SET APP_STATUS=?, DATE_ACTION=?, REMARKS=? WHERE APP_ID=?";
 		$stmt=$conn->prepare($stmt);
 		$stmt->bind_param('ssss',$APP_STATUS,$DATE_ACTION,$REMARKS, $APP_ID);
@@ -27,34 +27,7 @@
 			   }elseif($APP_STATUS=="Rejected"){
 				$NOTFICATION_SMS ="Hi $sms_name, we’re sorry your appointment request for $sms_date $sms_time Ref: $sms_number was not approved. Please contact us to reschedule. St.Philip Benizi Parish";
 			   }
-               // Send SMS asynchronously to avoid blocking the UI
-               $hostHeader = $_SERVER['HTTP_HOST'];
-               $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/\\');
-               $path = $base.'/sms_async.php';
-               $isHttps = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || $_SERVER['SERVER_PORT'] == 443;
-               $host = $hostHeader;
-               $port = $isHttps ? 443 : 80;
-               if (strpos($hostHeader, ':') !== false) {
-                   list($host, $portStr) = explode(':', $hostHeader, 2);
-                   $port = (int)$portStr;
-               }
-               $transportHost = ($isHttps ? 'ssl://' : '').$host;
-               $postData = http_build_query([
-                   'mobile' => $MOBILE,
-                   'message' => $NOTFICATION_SMS
-               ]);
-               $fp = @fsockopen($transportHost, $port, $errno, $errstr, 1);
-               if ($fp) {
-                   $out = "POST ".$path." HTTP/1.1\r\n";
-                   $out .= "Host: ".$hostHeader."\r\n";
-                   $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
-                   $out .= "Content-Length: ".strlen($postData)."\r\n";
-                   $out .= "Connection: Close\r\n\r\n";
-                   $out .= $postData;
-                   fwrite($fp, $out);
-                   fclose($fp);
-               } else {
-                   // Fallback to direct sending if socket open fails
+               if($MOBILE !== '' && !empty($NOTFICATION_SMS)){
                    require_once('sms_script.php');
                }
                if(isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])==='xmlhttprequest'){
