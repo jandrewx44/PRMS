@@ -1,4 +1,4 @@
-<?php include "main_header.php"?>
+<?php include __DIR__ . "/header.php"?>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Content Wrapper. Contains page content -->
@@ -29,4 +29,4 @@
     </section>
     <!-- /.content -->
   </div>
-  <?php include "main_footer_script.php";?>
+  <?php include __DIR__ . "/footer.php";?>
