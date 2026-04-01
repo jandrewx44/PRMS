@@ -102,9 +102,10 @@
                           <td><?=ucwords(strtolower($row['FATHER_NAME'])); ?></td>
                           <td><?=ucwords(strtolower($row['MOTHER_NAME'])); ?></td>
                           <td align="right">
-                            <dib class="btn-group">
+                            <div class="btn-group">
                             <a href="<?='conversion_update.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-primary btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
                             <a href="<?='conversion_info.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-success btn-sm "><i class="fa-solid fa fa-eye"></i> </a>
+                            <a data-mytooltip="tooltip" data-placement="top" title="DELETE RECORD" href="<?='conversion_delete.php?q='.$row['ID'].'&year='.$ShowYear;?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa-solid fa fa-trash"></i> </a>
                             </div>
                           </td>
                         </tr>
