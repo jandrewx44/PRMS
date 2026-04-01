@@ -102,6 +102,7 @@
                           <div class="btn-group">
                           <a data-mytooltip="tooltip" data-placement="top" title="PRINT" href="<?='permission-baptism-certification-pdf-print.php?PERID='.$row['PERID'];?>" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-print"></i> </a>
                           <a data-mytooltip="tooltip" data-placement="top" title="EDIT " href="<?='permission-baptism-certification-update.php?PERID='.$row['PERID'];?>" class="btn bg-gradient-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
+                          <a data-mytooltip="tooltip" data-placement="top" title="DELETE" href="<?='permission-baptism-certification-delete.php?PERID='.$row['PERID'];?>" class="btn bg-gradient-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa fa-trash"></i> </a>
                           </div>
                           </td>
                         </tr>

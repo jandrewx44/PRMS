@@ -100,6 +100,7 @@
                           <div class="btn-group">
                           <a data-mytooltip="tooltip" data-placement="top" title="PRINT ATTENDANCE" href="<?='pre-jordan-attendance-pdf-print.php?JORID='.$row['JORID'];?>" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-print"></i> </a>
                           <a data-mytooltip="tooltip" data-placement="top" title="EDIT ATTENDANCE" href="<?='pre-jordan-attendance-update.php?JORID='.$row['JORID'];?>" class="btn bg-gradient-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
+                          <a data-mytooltip="tooltip" data-placement="top" title="DELETE ATTENDANCE" href="<?='pre-jordan-attendance-delete.php?JORID='.$row['JORID'];?>" class="btn bg-gradient-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa fa-trash"></i> </a>
                           </div>
                           </td>
                         </tr>

@@ -100,6 +100,7 @@
                           <a data-mytooltip="tooltip" data-placement="top" title="PRINT BAPTISM" href="<?='baptismal-changes-own-pdf-corrected.php?corrected='.$row['AUTONUM'];?>" class="btn bg-gradient-info btn-sm"><i class="text-white fas fa-sharp fa-solid fa-print"></i> </a>
                           <a data-mytooltip="tooltip" data-placement="top" title="VIEW CORRECTION" href="<?='baptismal-changes-own-pdf-print.php?AUTONUM='.$row['AUTONUM'];?>" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-eye"></i> </a>
                           <a data-mytooltip="tooltip" data-placement="top" title="EDIT CORRECTION" href="<?='baptismal-changes-own-update.php?edit='.$row['ID'];?>" class="btn bg-gradient-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
+                          <a data-mytooltip="tooltip" data-placement="top" title="DELETE CORRECTION" href="<?='baptismal-changes-own-delete.php?q='.$row['ID'];?>" class="btn bg-gradient-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa fa-trash"></i> </a>
                           </div>
                           </td>
                         </tr>

@@ -101,6 +101,7 @@
                           
                           <a data-mytooltip="tooltip" data-placement="top" title="VIEW REQUEST" href="<?='baptism_letter_of_request-pdf-print.php?AUTONUM='.$row['AUTONUM'];?>" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-eye"></i> </a>
                           <a data-mytooltip="tooltip" data-placement="top" title="EDIT REQUEST" href="<?='baptism_letter_of_request-update.php?edit='.$row['REQID'];?>" class="btn bg-gradient-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
+                          <a data-mytooltip="tooltip" data-placement="top" title="DELETE REQUEST" href="<?='baptism_letter_of_request-delete.php?q='.$row['REQID'];?>" class="btn bg-gradient-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa fa-trash"></i> </a>
                           </div>
                           </td>
                         </tr>

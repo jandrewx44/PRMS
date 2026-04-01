@@ -100,6 +100,7 @@
                           <div class="btn-group">
                           <a data-mytooltip="tooltip" data-placement="top" title="PRINT" href="<?='baptism-certification-pdf-print.php?BAPID='.$row['BAPID'];?>" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-print"></i> </a>
                           <a data-mytooltip="tooltip" data-placement="top" title="EDIT " href="<?='baptism-certification-update.php?BAPID='.$row['BAPID'];?>" class="btn bg-gradient-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
+                          <a data-mytooltip="tooltip" data-placement="top" title="DELETE" href="<?='baptism-certification-delete.php?BAPID='.$row['BAPID'];?>" class="btn bg-gradient-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa fa-trash"></i> </a>
                           </div>
                           </td>
                         </tr>
