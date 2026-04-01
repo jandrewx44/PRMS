@@ -110,6 +110,7 @@
 							              <a data-mytooltip="tooltip" data-placement="top" title="PRINT" target="_blank" href="baptism-certification-pdf_form_pdf2.php?baptismid=<?=$row['ID'];?>" class="btn bg-pink btn-sm"><i class="fa-solid fa fa-print text-white"></i> </a>
                             <a data-mytooltip="tooltip" data-placement="top" title="EDIT RECORD" href="<?='baptismal_update.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
                             <a data-mytooltip="tooltip" data-placement="top" title="VIEW RECORD" href="<?='baptismal_info.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-primary btn-sm "><i class="fa-solid fa fa-eye"></i> </a>
+                            <a data-mytooltip="tooltip" data-placement="top" title="DELETE RECORD" href="<?='baptismal_delete.php?q='.$row['ID'].'&year='.$ShowYear;?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa-solid fa fa-trash"></i> </a>
 							            </div>
                           </td>
                         </tr>
