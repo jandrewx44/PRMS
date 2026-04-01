@@ -246,7 +246,7 @@ if($query->num_rows > 0){
 	</tr>
 	  </tfoot>
 </table>';
-$pdf->writeHTML($content,true, false, true, false, '');
+$pdf->writeHTML($contents,true, false, true, false, '');
 ob_end_clean();
 $pdf->Output('Baptismal.pdf', 'I');
 ?>
