@@ -2,6 +2,19 @@
 error_reporting(0);
 ob_start();
 	include 'includes/conn.php';
+
+function safe_html($value){
+	return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+}
+
+function date_parts($dateValue){
+	$ts = strtotime((string)$dateValue);
+	if(!$ts){
+		return array('', '', '');
+	}
+	return array(date('j', $ts), date('F', $ts), date('Y', $ts));
+}
+
 	if(isset($_GET['BAPID'])){
   	$BAPID =$_GET['BAPID'];
    $sql = "SELECT * FROM tbl_batism_certification WHERE BAPID= '".$BAPID."'";
@@ -126,128 +139,168 @@ if($query->num_rows > 0){
 	  $logo_left='';
 	}
 	
+	list($dobDay, $dobMonth, $dobYear) = date_parts($DOB);
+	list($bapDay, $bapMonth, $bapYear) = date_parts($DOB_BAPTISM);
+
+	$childName = safe_html($CHILDNAME);
+	$pob = safe_html($POB);
+	$father = safe_html($FATHER);
+	$mother = safe_html($MOTHER);
+	$churchName = safe_html($CHURCH_NAME);
+	$churchAddress = safe_html($CHURCH_ADDRESS);
+	$baptizedBy = safe_html($BAPTIZED_BY);
+	$notations = safe_html($NOTATIONS);
+	$givenDay = safe_html($GIVEN_DAY);
+	$givenMonth = safe_html($GIVEN_MONTH);
+	$givenYear = safe_html($GIVEN_YEAR);
+	$pageNo = safe_html($PAGE_NO);
+	$bookNo = safe_html($BOOK_NO);
+	$regNo = safe_html($REG_NO);
+	$diocese = safe_html($SYS_DIOCESE);
+	$parishName = $churchName !== '' ? $churchName : safe_html($SYS_CHURCH_NAME);
+	$parishOffice = $parishName;
+
+	$sponsorsText = trim((string)$SPONSORS);
+	$sponsorLine1 = '';
+	$sponsorLine2 = '';
+	if($sponsorsText !== ''){
+		$parts = preg_split('/\r\n|\r|\n/', $sponsorsText);
+		$parts = array_values(array_filter(array_map('trim', $parts), function($v){ return $v !== ''; }));
+		if(count($parts) === 0){
+			$parts = preg_split('/\s*,\s*/', $sponsorsText);
+			$parts = array_values(array_filter(array_map('trim', $parts), function($v){ return $v !== ''; }));
+		}
+		if(count($parts) > 0){
+			$sponsorLine1 = safe_html($parts[0]);
+		}
+		if(count($parts) > 1){
+			$sponsorLine2 = safe_html($parts[1]);
+		}
+	}
+
+	$crestHtml = ($right_logo !== '') ? '<img src="'.$right_logo.'" width="24">' : '';
+
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
-    $pdf->AddPage(); 
-	$pdf->SetAlpha(0.1);
-    $img_file = file_get_contents($logo_left);
-	$pdf->Image('@' . $img_file, 25, 50, 160, '', '', '', '', false, 50, '', false);
-	$pdf->SetAlpha(1);
-	
+    $pdf->AddPage();
+	$pdf->SetLineStyle(array('width' => 0.4, 'color' => array(0,0,0)));
+	$pdf->Rect(7, 7, 196, 283);
+	$pdf->Rect(9, 9, 192, 279);
+
     $contents = '
-    <table width="100%">
-      <thead>
-      <tr>
-        <td align="left" width="20%">
-        <img src="'.$right_logo.'" alt="" class="float-left" width="80">
-        </td>
-          <td align="center" width="60%">
-          <span style="text-transform:uppercase">'.$SYS_DIOCESE.'</span><br>
-          <span style="text-transform:uppercase">'.$SYS_CHURCH_NAME.'</span><br>
-          <span style="text-transform:uppercase">'.$SYS_ADDRESS.'</span>
-          <br>
-          <br>
-          <br>
-          </td>
-          <td align="right" width="20%">
-          <img src="'.$logo_left.'" alt="" class="float-left" width="80">
-          </td>
-      </tr>
-      </thead>
-    </table>
-<table width="100%" border="0" style="text-align:justify">
-   <thead>
-    <tr><td><hr></td></tr>
-    <tr><td><h3 align="center">CERTIFICATE OF BAPTISM</h3><br></td></tr>
-    <tr><td><h4 align="">This is to certify that</h4><br></td></tr>
-   </thead>
-<tbody>
-<tr>
-<td width="31%">Name of Child</td>
-<td width="69%" style="border-bottom:0.1px solid black;">'.$CHILDNAME.'</td>
-</tr>
-<tr>
-<td>Date of Birth</td>
-<td width="69%" style="border-bottom:0.1px solid black;">'.date('F d, Y',strtotime($DOB)).'</td>
-</tr>
-	<tr>
-        <td>Place of Birth</td>
-        <td width="69%" style="border-bottom:0.1px solid black;">'.$POB.'</td>
-    </tr>
-    <tr>
-        <td>Name of Father</td>
-        <td width="69%" style="border-bottom:0.1px solid black;">'.$FATHER.'</td>
-    </tr>
-
-    <tr>
-        <td>Maiden Name of Mother</td>
-        <td width="69%" style="border-bottom:0.1px solid black;">'.$MOTHER.'</td>
-    </tr>
-    <tr>
-        <td>Address of Parents</td>
-        <td width="69%" style="border-bottom:0.1px solid black;">'.$PARENTS_ADDRESS.' </td>
-    </tr>
-
-   <tr>
-      <td colspan="3"><br> <br>Was solemnly baptized according to the Rite of Roman Catholic Church at the<br></td>
-    </tr>
-   <tr>
-      <td width="31%">Name of Parish </td>
-      <td style="float:left;text-transform:capitalize">'.$CHURCH_NAME.'</td>
-    </tr>
-    <tr>
-      <td width="31%">Address of Parish </td>
-      <td>'.$CHURCH_ADDRESS.' <br></td>
-    </tr>
-    <tr>
-      <td width="31%">Date of Baptism</td>
-      <td style="border-bottom:0.1px solid black;">'.date('F d, Y',strtotime($DOB_BAPTISM)).'</td>
-    </tr>
-    <tr>
-      <td>Baptized By</td>
-      <td style="border-bottom:0.1px solid black;">'.$BAPTIZED_BY.'</td>
-    </tr>
-        <tr>
-        <td width="31%"><br>Sponsors</td>
-		<td width="69%">'.$SPONSORS.'</td>
-      </tr>
-	  <tr>
-		<td colspan="3"><br><br>Notations: <br><br>'.$NOTATIONS.'</td>
-	  </tr>
-   <tr>
-      <td colspan="3"><br><br>In witness thereof, here unto I affixed my signature and the seal of the Parish</td>
-   </tr>
-    <tr>
-      <td width="10%">this</td>
-      <td width="10%" style="border-bottom:0.1px solid black;">'.$GIVEN_DAY.'</td>
-      <td width="10%">day of </td>
-      <td width="15%" style="border-bottom:0.1px solid black;"> '.$GIVEN_MONTH.'</td>
-      <td width="5%">,</td>
-      <td width="10%" colspan="5" style="border-bottom:0.1px solid black;">'.$GIVEN_YEAR.'</td>
-    </tr>
-    </tbody>
-
-  <tfoot>
-		<tr>
-			<td width="70%"></td>
-			<td width="30%"></td>
-		</tr>
-	<tr>
-		<td width="70%"></td>
-		<td width="30%"></td>
-	</tr>
-    <tr>
-		<td width="12%" style="border:1px solid #fff">Book No.</td>
-		<td width="12%" style="border:1px solid #fff">'.$BOOK_NO.'</td>
-	</tr>
-	<tr>
-		<td width="12%" style="border:1px solid #fff">Page No.</td>
-		<td width="12%" style="border:1px solid #fff">'.$PAGE_NO.'</td>
-	</tr>
-	<tr>
-	  <td width="12%" style="border:1px solid #fff">Reg. No.</td>
-	  <td width="12%" style="border:1px solid #fff">'.$REG_NO.'</td>
-	</tr>
-	  </tfoot>
+<table width="100%" border="0">
+  <tr>
+    <td align="center">'.$crestHtml.'</td>
+  </tr>
+  <tr>
+    <td align="center" style="font-size:22px; font-weight:bold; color:#0B6B2E;">'.$diocese.'</td>
+  </tr>
+</table>
+<table width="100%" border="0">
+  <tr>
+    <td width="20%" style="font-size:14px;">PARISH OF</td>
+    <td width="80%" style="border-bottom:0.1px solid black;">'.$parishName.'</td>
+  </tr>
+  <tr>
+    <td width="20%"></td>
+    <td width="80%" style="border-bottom:0.1px solid black;">'.$churchAddress.'</td>
+  </tr>
+</table>
+<br><br>
+<table width="100%" border="0">
+  <tr><td align="center" style="font-size:24px; font-weight:bold;">CERTIFICATE OF BAPTISM</td></tr>
+</table>
+<br>
+<table width="100%" border="0" style="font-size:12px;">
+  <tr>
+    <td width="24%">This is to certify that</td>
+    <td width="76%" style="border-bottom:0.1px solid black;">'.$childName.'</td>
+  </tr>
+  <tr>
+    <td width="22%">Son</td>
+    <td width="4%">)</td>
+    <td width="10%">of</td>
+    <td width="64%" style="border-bottom:0.1px solid black;">'.$father.'</td>
+  </tr>
+  <tr>
+    <td width="22%">Daughter</td>
+    <td width="4%">)</td>
+    <td width="10%">and</td>
+    <td width="64%" style="border-bottom:0.1px solid black;">'.$mother.'</td>
+  </tr>
+  <tr>
+    <td width="20%">was born in</td>
+    <td width="80%" style="border-bottom:0.1px solid black;">'.$pob.'</td>
+  </tr>
+  <tr>
+    <td width="14%">on the</td>
+    <td width="18%" style="border-bottom:0.1px solid black;">'.$dobDay.'</td>
+    <td width="12%">day of</td>
+    <td width="40%" style="border-bottom:0.1px solid black;">'.$dobMonth.'</td>
+    <td width="3%">,</td>
+    <td width="13%" style="border-bottom:0.1px solid black;">'.$dobYear.'</td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0">
+  <tr><td align="center" style="font-size:14px; font-weight:bold;">AND WAS BAPTIZED ACCORDING TO THE</td></tr>
+  <tr><td align="center" style="font-size:14px; font-weight:bold;">ROMAN CATHOLIC RITE</td></tr>
+</table>
+<br>
+<table width="100%" border="0" style="font-size:12px;">
+  <tr>
+    <td width="14%">on the</td>
+    <td width="18%" style="border-bottom:0.1px solid black;">'.$bapDay.'</td>
+    <td width="12%">day of</td>
+    <td width="40%" style="border-bottom:0.1px solid black;">'.$bapMonth.'</td>
+    <td width="3%">,</td>
+    <td width="13%" style="border-bottom:0.1px solid black;">'.$bapYear.'</td>
+  </tr>
+  <tr>
+    <td width="29%">in this Parish Church by Rev.</td>
+    <td width="71%" style="border-bottom:0.1px solid black;">'.$baptizedBy.'</td>
+  </tr>
+  <tr>
+    <td width="26%">and the sponsors were:</td>
+    <td width="44%" style="border-bottom:0.1px solid black;">'.$sponsorLine1.'</td>
+    <td width="6%">of</td>
+    <td width="24%" style="border-bottom:0.1px solid black;"></td>
+  </tr>
+  <tr>
+    <td width="26%"></td>
+    <td width="44%" style="border-bottom:0.1px solid black;">'.$sponsorLine2.'</td>
+    <td width="6%">of</td>
+    <td width="24%" style="border-bottom:0.1px solid black;"></td>
+  </tr>
+  <tr>
+    <td colspan="4">The above is an authentic copy of the record as it appears on Page</td>
+  </tr>
+  <tr>
+    <td width="8%">Page</td>
+    <td width="18%" style="border-bottom:0.1px solid black;">'.$pageNo.'</td>
+    <td width="10%">Volume</td>
+    <td width="18%" style="border-bottom:0.1px solid black;">'.$bookNo.'</td>
+    <td width="8%">Line</td>
+    <td width="16%" style="border-bottom:0.1px solid black;">'.$regNo.'</td>
+    <td width="22%">of the Baptismal</td>
+  </tr>
+  <tr>
+    <td colspan="7">records on file in this Church.</td>
+  </tr>
+  <tr>
+    <td width="30%">Given at the Parish office of</td>
+    <td width="70%" colspan="6" style="border-bottom:0.1px solid black;">'.$parishOffice.'</td>
+  </tr>
+  <tr>
+    <td width="10%">this</td>
+    <td width="18%" style="border-bottom:0.1px solid black;">'.$givenDay.'</td>
+    <td width="10%">day of</td>
+    <td width="36%" style="border-bottom:0.1px solid black;">'.$givenMonth.'</td>
+    <td width="6%">,</td>
+    <td width="20%" colspan="2" style="border-bottom:0.1px solid black;">'.$givenYear.'</td>
+  </tr>
+  <tr>
+    <td colspan="7">Notations: '.$notations.'</td>
+  </tr>
 </table>';
     $pdf->writeHTML($contents,true, false, true, false, '');
     $sigFont = 8;
@@ -262,7 +315,9 @@ if($query->num_rows > 0){
     $pdf->SetY($pdf->getPageHeight() - $margins['bottom'] - 25);
     $pdf->SetX($pdf->getPageWidth() - $margins['right'] - $sigWidth);
     $pdf->Cell($sigWidth, 0, $PRIEST_NAME, 'T', 1, 'R', false, '', 0);
-    ob_end_clean();
+    if (ob_get_level() > 0) {
+      ob_end_clean();
+    }
     $pdf->Output('Baptismal.pdf', 'D');
 
 ?>
