@@ -101,13 +101,13 @@ $pdf->SetTitle('BAPTISMAL- '.$CHILDNAME);
 $pdf->SetHeaderData('', '', PDF_HEADER_TITLE, PDF_HEADER_STRING);
 $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-$pdf->SetDefaultMonospacedFont('helvetica');
+$pdf->SetDefaultMonospacedFont('times');
 $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-$pdf->SetMargins(PDF_MARGIN_LEFT, '10', PDF_MARGIN_RIGHT);
+$pdf->SetMargins(14, 12, 14);
 $pdf->setPrintHeader(FALSE);
 $pdf->setPrintFooter(TRUE);
 $pdf->SetAutoPageBreak(TRUE, 10);
-$pdf->SetFont('helvetica', '', 11);
+$pdf->SetFont('times', '', 11);
 
 $sql = "SELECT PRIEST_NAME FROM tbl_priest WHERE PRIEST_DEFAULT = 'YES'";
 $query = $conn->query($sql);
@@ -155,7 +155,7 @@ $parishNameRaw = trim((string)$CHURCH_NAME) !== '' ? $CHURCH_NAME : $SYS_CHURCH_
 $parishAddressRaw = trim((string)$CHURCH_ADDRESS) !== '' ? $CHURCH_ADDRESS : $SYS_ADDRESS;
 $parishName = safe_html($parishNameRaw);
 $parishAddress = safe_html($parishAddressRaw);
-$crestHtml = ($right_logo !== '' && file_exists($right_logo)) ? '<img src="'.$right_logo.'" width="24">' : '';
+$crestHtml = ($right_logo !== '' && file_exists($right_logo)) ? '<img src="'.$right_logo.'" width="34">' : '';
 
 $givenDay = date('jS');
 $givenMonth = date('F');
@@ -166,6 +166,7 @@ $pdf->AddPage();
 $pdf->SetLineStyle(array('width' => 0.4, 'color' => array(0, 0, 0)));
 $pdf->Rect(7, 7, 196, 283);
 $pdf->Rect(9, 9, 192, 279);
+$pdf->SetY(13);
 
 $notationsRow = '';
 if($notations !== ''){
@@ -176,100 +177,101 @@ if($notations !== ''){
 }
 
 $contents = '
-<table width="100%" border="0">
+<table width="100%" border="0" cellpadding="0">
   <tr>
-    <td align="center">'.$crestHtml.'</td>
+    <td align="center" style="height:2mm;">'.$crestHtml.'</td>
   </tr>
   <tr>
-    <td align="center" style="font-size:22px; font-weight:bold; color:#0B6B2E;">'.$diocese.'</td>
+    <td align="center" style="font-family:times; font-size:20px; font-weight:bold; color:#0B6B2E; letter-spacing:0.4px;">'.$diocese.'</td>
   </tr>
-</table>
-<table width="100%" border="0">
-  <tr>
-    <td width="20%" style="font-size:14px;">PARISH OF</td>
-    <td width="80%" style="border-bottom:0.1px solid black;">'.$parishName.'</td>
-  </tr>
-  <tr>
-    <td width="20%"></td>
-    <td width="80%" style="border-bottom:0.1px solid black;">'.$parishAddress.'</td>
-  </tr>
-</table>
-<br><br>
-<table width="100%" border="0">
-  <tr><td align="center" style="font-size:24px; font-weight:bold;">CERTIFICATE OF BAPTISM</td></tr>
 </table>
 <br>
-<table width="100%" border="0" style="font-size:12px;">
+<table width="100%" border="0" cellpadding="1.4" style="font-family:times; font-size:12.5px;">
+  <tr>
+    <td width="19%" style="font-weight:bold;">PARISH OF</td>
+    <td width="81%" style="border-bottom:0.25px solid black;">'.$parishName.'</td>
+  </tr>
+  <tr>
+    <td width="19%"></td>
+    <td width="81%" style="border-bottom:0.25px solid black;">'.$parishAddress.'</td>
+  </tr>
+</table>
+<br>
+<table width="100%" border="0" cellpadding="0">
+  <tr><td align="center" style="font-family:times; font-size:24px; font-weight:bold; letter-spacing:0.6px;">CERTIFICATE OF BAPTISM</td></tr>
+</table>
+<br><br>
+<table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
   <tr>
     <td width="24%">This is to certify that</td>
-    <td width="76%" style="border-bottom:0.1px solid black;">'.$childName.'</td>
+    <td width="76%" style="border-bottom:0.25px solid black;">'.$childName.'</td>
   </tr>
   <tr>
     <td width="22%">Son</td>
     <td width="4%">)</td>
     <td width="10%">of</td>
-    <td width="64%" style="border-bottom:0.1px solid black;">'.$father.'</td>
+    <td width="64%" style="border-bottom:0.25px solid black;">'.$father.'</td>
   </tr>
   <tr>
     <td width="22%">Daughter</td>
     <td width="4%">)</td>
     <td width="10%">and</td>
-    <td width="64%" style="border-bottom:0.1px solid black;">'.$mother.'</td>
+    <td width="64%" style="border-bottom:0.25px solid black;">'.$mother.'</td>
   </tr>
   <tr>
     <td width="20%">was born in</td>
-    <td width="80%" style="border-bottom:0.1px solid black;">'.$birthPlace.'</td>
+    <td width="80%" style="border-bottom:0.25px solid black;">'.$birthPlace.'</td>
   </tr>
   <tr>
     <td width="14%">on the</td>
-    <td width="18%" style="border-bottom:0.1px solid black;">'.$dobDay.'</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$dobDay.'</td>
     <td width="12%">day of</td>
-    <td width="40%" style="border-bottom:0.1px solid black;">'.$dobMonth.'</td>
+    <td width="40%" style="border-bottom:0.25px solid black;">'.$dobMonth.'</td>
     <td width="3%">,</td>
-    <td width="13%" style="border-bottom:0.1px solid black;">'.$dobYear.'</td>
+    <td width="13%" style="border-bottom:0.25px solid black;">'.$dobYear.'</td>
   </tr>
 </table>
-<br>
-<table width="100%" border="0">
-  <tr><td align="center" style="font-size:14px; font-weight:bold;">AND WAS BAPTIZED ACCORDING TO THE</td></tr>
-  <tr><td align="center" style="font-size:14px; font-weight:bold;">ROMAN CATHOLIC RITE</td></tr>
+<br><br>
+<table width="100%" border="0" cellpadding="0">
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold;">AND WAS BAPTIZED ACCORDING TO THE</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold;">ROMAN CATHOLIC RITE</td></tr>
 </table>
-<br>
-<table width="100%" border="0" style="font-size:12px;">
+<br><br>
+<table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
   <tr>
     <td width="14%">on the</td>
-    <td width="18%" style="border-bottom:0.1px solid black;">'.$bapDay.'</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$bapDay.'</td>
     <td width="12%">day of</td>
-    <td width="40%" style="border-bottom:0.1px solid black;">'.$bapMonth.'</td>
+    <td width="40%" style="border-bottom:0.25px solid black;">'.$bapMonth.'</td>
     <td width="3%">,</td>
-    <td width="13%" style="border-bottom:0.1px solid black;">'.$bapYear.'</td>
+    <td width="13%" style="border-bottom:0.25px solid black;">'.$bapYear.'</td>
   </tr>
   <tr>
     <td width="29%">in this Parish Church by Rev.</td>
-    <td width="71%" style="border-bottom:0.1px solid black;">'.$baptizedBy.'</td>
+    <td width="71%" style="border-bottom:0.25px solid black;">'.$baptizedBy.'</td>
   </tr>
   <tr>
     <td width="26%">and the sponsors were:</td>
-    <td width="44%" style="border-bottom:0.1px solid black;">'.$sponsorLine1.'</td>
+    <td width="44%" style="border-bottom:0.25px solid black;">'.$sponsorLine1.'</td>
     <td width="6%">of</td>
-    <td width="24%" style="border-bottom:0.1px solid black;"></td>
+    <td width="24%" style="border-bottom:0.25px solid black;"></td>
   </tr>
   <tr>
     <td width="26%"></td>
-    <td width="44%" style="border-bottom:0.1px solid black;">'.$sponsorLine2.'</td>
+    <td width="44%" style="border-bottom:0.25px solid black;">'.$sponsorLine2.'</td>
     <td width="6%">of</td>
-    <td width="24%" style="border-bottom:0.1px solid black;"></td>
+    <td width="24%" style="border-bottom:0.25px solid black;"></td>
   </tr>
   <tr>
-    <td colspan="4">The above is an authentic copy of the record as it appears on Page</td>
+    <td colspan="7">The above is an authentic copy of the record as it appears on Page</td>
   </tr>
   <tr>
     <td width="8%">Page</td>
-    <td width="18%" style="border-bottom:0.1px solid black;">'.$pageNo.'</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$pageNo.'</td>
     <td width="10%">Volume</td>
-    <td width="18%" style="border-bottom:0.1px solid black;">'.$bookNo.'</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$bookNo.'</td>
     <td width="8%">Line</td>
-    <td width="16%" style="border-bottom:0.1px solid black;">'.$regNo.'</td>
+    <td width="16%" style="border-bottom:0.25px solid black;">'.$regNo.'</td>
     <td width="22%">of the Baptismal</td>
   </tr>
   <tr>
@@ -277,32 +279,42 @@ $contents = '
   </tr>
   <tr>
     <td width="30%">Given at the Parish office of</td>
-    <td width="70%" colspan="6" style="border-bottom:0.1px solid black;">'.$parishName.'</td>
+    <td width="70%" colspan="6" style="border-bottom:0.25px solid black;">'.$parishName.'</td>
   </tr>
   <tr>
     <td width="10%">this</td>
-    <td width="18%" style="border-bottom:0.1px solid black;">'.$givenDay.'</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$givenDay.'</td>
     <td width="10%">day of</td>
-    <td width="36%" style="border-bottom:0.1px solid black;">'.$givenMonth.'</td>
+    <td width="36%" style="border-bottom:0.25px solid black;">'.$givenMonth.'</td>
     <td width="6%">,</td>
-    <td width="20%" colspan="2" style="border-bottom:0.1px solid black;">'.$givenYear.'</td>
-  </tr>'.$notationsRow.'
+    <td width="20%" colspan="2" style="border-bottom:0.25px solid black;">'.$givenYear.'</td>
+  </tr>
+  <tr><td colspan="7">&nbsp;</td></tr>'.$notationsRow.'
 </table>';
 
 $pdf->writeHTML($contents, true, false, true, false, '');
 
-$sigFont = 8;
-$pdf->SetFont('helvetica', '', $sigFont);
+$sigBlockWidth = 58;
 $margins = $pdf->getMargins();
-$available = $pdf->getPageWidth() - $margins['left'] - $margins['right'];
-while($pdf->getStringWidth($PRIEST_NAME) > $available && $sigFont > 6){
-	$sigFont -= 0.5;
-	$pdf->SetFont('helvetica', '', $sigFont);
+$sigX = $pdf->getPageWidth() - $margins['right'] - $sigBlockWidth - 2;
+$sigLineY = $pdf->getPageHeight() - $margins['bottom'] - 22;
+
+if($PRIEST_NAME !== ''){
+	$sigNameFont = 10;
+	$pdf->SetFont('times', '', $sigNameFont);
+	while($pdf->GetStringWidth($PRIEST_NAME) > ($sigBlockWidth - 2) && $sigNameFont > 7){
+		$sigNameFont -= 0.5;
+		$pdf->SetFont('times', '', $sigNameFont);
+	}
+	$pdf->SetXY($sigX, $sigLineY - 7);
+	$pdf->Cell($sigBlockWidth, 5, $PRIEST_NAME, 0, 0, 'C', false, '', 0, false, 'T', 'M');
 }
-$sigWidth = min($available * 0.6, $pdf->getStringWidth($PRIEST_NAME) + 10);
-$pdf->SetY($pdf->getPageHeight() - $margins['bottom'] - 25);
-$pdf->SetX($pdf->getPageWidth() - $margins['right'] - $sigWidth);
-$pdf->Cell($sigWidth, 0, $PRIEST_NAME, 'T', 1, 'R', false, '', 0);
+
+$pdf->SetLineWidth(0.2);
+$pdf->Line($sigX, $sigLineY, $sigX + $sigBlockWidth, $sigLineY);
+$pdf->SetFont('times', '', 11);
+$pdf->SetXY($sigX, $sigLineY + 1.5);
+$pdf->Cell($sigBlockWidth, 5, 'Parish Priest', 0, 0, 'C');
 
 if(ob_get_level() > 0){
 	ob_end_clean();
