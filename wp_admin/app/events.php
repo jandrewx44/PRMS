@@ -139,12 +139,34 @@
   </div>
   <!-- /.content-wrapper -->
   <?php include "includes/event_modal.php";?>
+  <div class="modal fade" id="event_feedback_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="event_feedback_title">Notice</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="event_feedback_body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
  <?php include "includes/footer.php";?>
 
  
 <script>
 // Wire Edit buttons to open modal and load data
 $(function(){
+  function showEventMessage(title, message){
+    $('#event_feedback_title').text(title);
+    $('#event_feedback_body').text(message);
+    $('#event_feedback_modal').modal('show');
+  }
+
   $(document).on('click', '.edit-event', function(){
     var id = $(this).data('id');
     $.ajax({
@@ -154,7 +176,7 @@ $(function(){
       dataType: 'json'
     }).done(function(row){
       if(!row || !row.id){
-        alert('Unable to load event details.');
+        showEventMessage('Notice', 'Unable to load event details.');
         return;
       }
       $('.id').val(row.id);
@@ -164,7 +186,7 @@ $(function(){
       $('#edit_time').val(String(row.end_datetime).split(' ')[0]);
       $('#edit').modal('show');
     }).fail(function(){
-      alert('Failed to load event.');
+      showEventMessage('Notice', 'Failed to load event.');
     });
   });
 });
