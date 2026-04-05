@@ -85,130 +85,145 @@ if($query->num_rows > 0){
 	$pdf->SetAlpha(1);
 	
     $contents = '
-    <table width="100%">
-      <thead>
+    <table width="100%" border="0">
       <tr>
-        <td align="left" width="20%">
-        <img src="'.$right_logo.'" alt="" class="float-left" width="80">
-        </td>
-          <td align="center" width="60%">
-          <span style="text-transform:uppercase">'.$SYS_DIOCESE.'</span><br>
-          <span style="text-transform:uppercase">'.$SYS_CHURCH_NAME.'</span><br>
-          <span style="text-transform:uppercase">'.$SYS_ADDRESS.'</span>
-          <br>
-          <br>
-          <br>
-          </td>
-          <td align="right" width="20%">
-          <img src="'.$logo_left.'" alt="" class="float-left" width="80">
-          </td>
+        <td align="center"><img src="'.$right_logo.'" width="24"></td>
       </tr>
-      </thead>
+      <tr>
+        <td align="center" style="font-size:20px; font-weight:bold;">'.$SYS_DIOCESE.'</td>
+      </tr>
     </table>
-  <table width="100%" border="0" style="text-align:justify">
-   <thead>
-    <tr><td><hr></td></tr>
-    <tr><td><h3 align="center">CERTIFICATE OF MARRIAGE</h3><br></td></tr>
-    <tr><td><h4 align="">This is to certify that:</h4><br></td></tr>
-    
-   </thead>
-  <tbody>
-  <tr>
-      <td width="100%"><br></td>
-    </tr>
-    <tr >
-      <td width="31%">Name of Groom</td>
-      <td width="69%" style="border-bottom:0.1px solid black;"></td>
-    </tr>
-    <tr>
-      <td>Residence</td>
-      <td width="69%" style="border-bottom:0.1px solid black;"></td>
-    </tr>
-
-    <tr>
-        <td>Name of Father</td>
-        <td width="69%" style="border-bottom:0.1px solid black;"></td>
-    </tr>
-    <tr>
-    <td>Name of Mother</td>
-    <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-    
-   <tr>
-      <td colspan="3"><br> <br>And<br></td>
-    </tr>
-    <tr>
-    <td width="31%">Name of Bride</td>
-    <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-  <tr>
-    <td>Residence</td>
-    <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-
-  <tr>
-      <td>Name of Father</td>
-      <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-  <tr>
-  <td>Name of Mother</td>
-  <td width="69%" style="border-bottom:0.1px solid black;"></td>
-</tr>
-<tr>
-      <td colspan="3"><br><br></td>
-    </tr>
-   <tr>
-      <td colspan="3">Were solemnly married according to the Rites of the Roman Catholic Church</td>
-   </tr>
-   <tr>
-      <td colspan="3"><br><br></td>
-    </tr>
-    <tr>
-    <td width="31%">Place of Marriage</td>
-    <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-  <tr>
-    <td width="31%">Date of Marriage</td>
-    <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-
-  <tr>
-      <td width="31%">Name of Witness(es)</td>
-      <td width="69%" style="border-bottom:0.1px solid black;"></td>
-  </tr>
-  <tr>
-  <td width="31%">Solemnizing Priest</td>
-  <td width="69%" style="border-bottom:0.1px solid black;"></td>
-</tr>
-<tr>
-      <td colspan="3"><br><br></td>
-    </tr>
-   <tr>
-      <td width="80%">In witness thereof, here unto I affixed my signature and the seal of the Parish this </td>
-      <td width="20%" style="border-bottom:0.1px solid black;"></td>
-   </tr>
-    <tr>
-      <td width="10%">day of </td>
-      <td width="10%" style="border-bottom:0.1px solid black;"></td>
-      <td width="5%">, 20</td>
-      <td width="10%" colspan="5" style="border-bottom:0.1px solid black;"></td>
-    </tr>
-    </tbody>
-    
-  <tfoot>
-		<tr>
-			<td width="70%"></td>
-			<td width="30%"></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td rowspan="4" align="center"><br><br><br><br><br><div style="text-align:center; border-top:1px solid black; width:50%; margin:auto; font-family:Times; font-size:13px; padding-top:5px;">'.$PRIEST_NAME.'</div></td>
-		</tr>
-    
-	  </tfoot>
-</table>';
+    <table width="100%" border="0">
+      <tr>
+        <td width="16%" style="font-size:12px;">Parish of</td>
+        <td width="84%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="16%"></td>
+        <td width="84%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+    </table>
+    <br><br>
+    <table width="100%" border="0">
+      <tr><td align="center" style="font-size:24px; font-weight:bold;">CERTIFICATE OF MARRIAGE</td></tr>
+      <tr><td align="center" style="font-size:14px;">This Certifies that</td></tr>
+    </table>
+    <br>
+    <table width="100%" border="0" style="font-size:12px;">
+      <tr>
+        <td width="43%" style="border-bottom:0.1px solid black;"></td>
+        <td width="14%" align="center" style="font-size:16px;">and</td>
+        <td width="43%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+    </table>
+    <br>
+    <table width="100%" border="0" style="font-size:12px;">
+      <tr>
+        <td width="14%">Age</td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%"></td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="14%">Native of</td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%"></td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="14%">Residence</td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%"></td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="14%">Father</td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%"></td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="14%">Mother</td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%"></td>
+        <td width="40%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+    </table>
+    <br>
+    <table width="100%" border="0">
+      <tr><td align="center" style="font-size:16px;">were united in</td></tr>
+      <tr><td align="center" style="font-size:18px; font-weight:bold;">Holy Matrimony</td></tr>
+      <tr><td align="center" style="font-size:16px; font-weight:bold;">According to the Rites of the Holy Roman Catholic Church</td></tr>
+    </table>
+    <br>
+    <table width="100%" border="0" style="font-size:12px;">
+      <tr>
+        <td width="12%">on the</td>
+        <td width="16%" style="border-bottom:0.1px solid black;"></td>
+        <td width="10%">day of</td>
+        <td width="28%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%">, 19</td>
+        <td width="8%" style="border-bottom:0.1px solid black;"></td>
+        <td width="20%">The Marriage was</td>
+      </tr>
+      <tr>
+        <td colspan="2">solemnized by Rev. Fr.</td>
+        <td colspan="4" style="border-bottom:0.1px solid black;"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td colspan="2">in the presence of</td>
+        <td colspan="2" style="border-bottom:0.1px solid black;"></td>
+        <td width="4%"></td>
+        <td colspan="2" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Residence</td>
+        <td colspan="2" style="border-bottom:0.1px solid black;"></td>
+        <td width="4%"></td>
+        <td colspan="2" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td colspan="7">witnesses as appears from the Marriage Records of this Church Book</td>
+      </tr>
+      <tr>
+        <td colspan="2" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%"></td>
+        <td width="8%">Page</td>
+        <td width="18%" style="border-bottom:0.1px solid black;"></td>
+        <td width="8%">Line</td>
+        <td width="22%" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="8%">Dated</td>
+        <td width="32%" style="border-bottom:0.1px solid black;"></td>
+        <td colspan="5"></td>
+      </tr>
+      <tr>
+        <td colspan="3">Given at the Parish Office of</td>
+        <td colspan="4" style="border-bottom:0.1px solid black;"></td>
+      </tr>
+      <tr>
+        <td width="8%">this</td>
+        <td width="20%" style="border-bottom:0.1px solid black;"></td>
+        <td width="10%">day of</td>
+        <td width="28%" style="border-bottom:0.1px solid black;"></td>
+        <td width="6%">, 19</td>
+        <td width="8%" style="border-bottom:0.1px solid black;"></td>
+        <td width="20%"></td>
+      </tr>
+    </table>
+    <br><br><br>
+    <table width="100%" border="0" style="font-size:12px;">
+      <tr>
+        <td width="62%"></td>
+        <td width="38%" align="center" style="border-top:0.1px solid black;">Parish Priest</td>
+      </tr>
+    </table>';
     $pdf->writeHTML($contents,true, false, true, false, '');
-    ob_end_clean();
+    if (ob_get_level() > 0) {
+      ob_end_clean();
+    }
     $pdf->Output('Marriage Certificate.pdf', 'D');
 
 ?>

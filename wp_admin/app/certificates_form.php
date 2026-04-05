@@ -12,12 +12,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h4>CERTIFCATES'S MENU</h4>
+            <h4>CERTIFICATES MENU</h4>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">HOME</a></li>
-              <li class="breadcrumb-item active">CERTIFICATE'S</li>
+              <li class="breadcrumb-item active">CERTIFICATES</li>
             </ol>
           </div>
         </div>
@@ -64,7 +64,7 @@
                     <a href="baptism-certification-record.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-users"></i> VIEW RECORDS
                     </a>
-                    <a href="baptism-certification-record.php" class="btn btn-tool text-primary">
+                    <a href="FORM-certificate-of-baptism.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-download"></i> DOWNLOAD
                     </a>
                   </div>
@@ -79,7 +79,7 @@
                     <a href="confirmation-certification-record.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-users"></i> VIEW RECORDS
                     </a>
-                    <a href="confirmation-certification-record.php" class="btn btn-tool text-primary">
+                    <a href="FORM-certificate-of-confirmation.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-download"></i> DOWNLOAD
                     </a>
                   </div>
@@ -103,13 +103,13 @@
               <div class="card card-default allowed-cert">
                 <div class="card-header">
                   <h4 class="card-title w-100a">
-                    <a class="d-block w-100a text-uppercase">CERTIFICATE OF MARRIAGE-2021</a>
+                    <a class="d-block w-100a text-uppercase">CERTIFICATE OF MARRIAGE</a>
                   </h4>
                   <div class="card-tools">
                     <a href="marriage-certification-record.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-users"></i> VIEW RECORDS
                     </a>
-                    <a href="marriage-certification-record.php" class="btn btn-tool text-primary">
+                    <a href="FROM-certification-of-marriage-2021.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-download"></i> DOWNLOAD
                     </a>
                   </div>
@@ -1144,7 +1144,7 @@
 					  	<a href="confirmation-certification-record.php" class="btn btn-tool text-primary">
 						  <i class="fa fa-sharp fa-solid fa-users"></i> VIEW RECORDS
 						  </a>
-						  <a href="FORM-NO-RECORD-OF-CONFIRMATION.php" class="btn btn-tool text-primary">
+                          <a href="FORM-certificate-of-confirmation.php" class="btn btn-tool text-primary">
 						  <i class="fa fa-sharp fa-solid fa-download"></i> DOWNLOAD
 						  </a>
 					  </div>
@@ -1406,7 +1406,7 @@
                     <div class="card-header">
                       <h4 class="card-title w-100a">
                         <a class="d-block w-100a text-uppercase" data-toggle="collapse" href="#collapseNine">
-                         <i class="fa-solid fa-hand-point-right fa-fade text-success"></i> Certificate of Marriage-2021
+                         <i class="fa-solid fa-hand-point-right fa-fade text-success"></i> Certificate of Marriage
                         </a>
                       </h4>
 					  <div class="card-tools">
@@ -1685,7 +1685,7 @@
                     <div class="card-header">
                       <h4 class="card-title w-100a">
                         <a class="d-block w-100a text-uppercase" data-toggle="collapse" href="#collapseTwelve">
-                          <i class="fa-solid fa-hand-point-right fa-fade text-success"></i> Permision for Baptism
+                          <i class="fa-solid fa-hand-point-right fa-fade text-success"></i> Permission for Baptism
                         </a>
                       </h4>
 					  <div class="card-tools">
