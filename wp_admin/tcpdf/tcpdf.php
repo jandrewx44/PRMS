@@ -7325,7 +7325,7 @@ class TCPDF {
 					for ($ypx = 0; $ypx < $hpx; ++$ypx) {
 						$color = imagecolorat($img, $xpx, $ypx);
 						// get and correct gamma color
-						$alpha = $this->getGDgamma($img, $color);
+						$alpha = (int) round($this->getGDgamma($img, $color));
 						imagesetpixel($imgalpha, $xpx, $ypx, $alpha);
 					}
 				}
