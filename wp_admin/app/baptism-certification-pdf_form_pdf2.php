@@ -196,7 +196,7 @@ $contents = '
     <td width="81%" style="border-bottom:0.25px solid black;">'.$parishAddress.'</td>
   </tr>
 </table>
-<br>
+<br><br>
 <table width="100%" border="0" cellpadding="0">
   <tr><td align="center" style="font-family:times; font-size:24px; font-weight:bold; letter-spacing:0.6px;">CERTIFICATE OF BAPTISM</td></tr>
 </table>
@@ -294,43 +294,29 @@ $contents = '
 
 $pdf->writeHTML($contents, true, false, true, false, '');
 
+$signaturePriestName = trim(preg_replace('/\s+/', ' ', str_replace(array("\r","\n"), ' ', (string)$BAPTIZED_BY)));
+if($signaturePriestName === ''){
+	$signaturePriestName = $PRIEST_NAME;
+}
+
 $sigBlockWidth = 58;
 $margins = $pdf->getMargins();
 $sigX = $pdf->getPageWidth() - $margins['right'] - $sigBlockWidth - 2;
 $sigLineY = $pdf->getPageHeight() - $margins['bottom'] - 22;
-$ministerBlockWidth = 62;
-$ministerX = $margins['left'] + 2;
-$ministerLineY = $sigLineY;
-$ministerName = trim(preg_replace('/\s+/', ' ', str_replace(array("\r","\n"), ' ', (string)$BAPTIZED_BY)));
 
-if($PRIEST_NAME !== ''){
+if($signaturePriestName !== ''){
 	$sigNameFont = 10;
 	$pdf->SetFont('times', '', $sigNameFont);
-	while($pdf->GetStringWidth($PRIEST_NAME) > ($sigBlockWidth - 2) && $sigNameFont > 7){
+	while($pdf->GetStringWidth($signaturePriestName) > ($sigBlockWidth - 2) && $sigNameFont > 7){
 		$sigNameFont -= 0.5;
 		$pdf->SetFont('times', '', $sigNameFont);
 	}
 	$pdf->SetXY($sigX, $sigLineY - 7);
-	$pdf->Cell($sigBlockWidth, 5, $PRIEST_NAME, 0, 0, 'C', false, '', 0, false, 'T', 'M');
-}
-
-if($ministerName !== ''){
-	$ministerNameFont = 10;
-	$pdf->SetFont('times', '', $ministerNameFont);
-	while($pdf->GetStringWidth($ministerName) > ($ministerBlockWidth - 2) && $ministerNameFont > 7){
-		$ministerNameFont -= 0.5;
-		$pdf->SetFont('times', '', $ministerNameFont);
-	}
-	$pdf->SetXY($ministerX, $ministerLineY - 7);
-	$pdf->Cell($ministerBlockWidth, 5, $ministerName, 0, 0, 'C', false, '', 0, false, 'T', 'M');
+	$pdf->Cell($sigBlockWidth, 5, $signaturePriestName, 0, 0, 'C', false, '', 0, false, 'T', 'M');
 }
 
 $pdf->SetLineWidth(0.2);
-$pdf->Line($ministerX, $ministerLineY, $ministerX + $ministerBlockWidth, $ministerLineY);
 $pdf->Line($sigX, $sigLineY, $sigX + $sigBlockWidth, $sigLineY);
-$pdf->SetFont('times', '', 10);
-$pdf->SetXY($ministerX, $ministerLineY + 1.5);
-$pdf->Cell($ministerBlockWidth, 5, 'NAME OF MINISTER', 0, 0, 'C');
 $pdf->SetFont('times', '', 11);
 $pdf->SetXY($sigX, $sigLineY + 1.5);
 $pdf->Cell($sigBlockWidth, 5, 'Parish Priest', 0, 0, 'C');
