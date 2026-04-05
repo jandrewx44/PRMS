@@ -179,7 +179,9 @@ $contents = '<br>
     ';
     $pdf->writeHTML($contents);  
     //$pdf->writeHTML($contents,true, false, true, false, '');
-    ob_end_clean();
+    if (ob_get_level() > 0) {
+      ob_end_clean();
+    }
     $pdf->Output('_receipt.pdf', 'I');
 
 ?>
