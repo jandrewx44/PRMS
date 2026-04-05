@@ -7798,7 +7798,9 @@ class TCPDF {
 			}
 			if (isset($this->imagekeys)) {
 				foreach($this->imagekeys as $file) {
-					unlink($file);
+					if (is_string($file) && file_exists($file)) {
+						unlink($file);
+					}
 				}
 			}
 		}
@@ -16989,6 +16991,9 @@ class TCPDF {
 							$colspan = 1;
 						}
 						$dom[$key]['attribute']['colspan'] = $colspan;
+						if (!isset($dom[($dom[$key]['parent'])]['cols'])) {
+							$dom[($dom[$key]['parent'])]['cols'] = 0;
+						}
 						$dom[($dom[$key]['parent'])]['cols'] += $colspan;
 					}
 					// text direction
@@ -18115,6 +18120,9 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 					}
 					// table cell
 					if (($dom[$key]['value'] == 'td') OR ($dom[$key]['value'] == 'th')) {
+						if (!isset($colid)) {
+							$colid = 0;
+						}
 						$trid = $dom[$key]['parent'];
 						$table_el = $dom[$trid]['parent'];
 						if (!isset($dom[$table_el]['cols'])) {
@@ -18248,6 +18256,9 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 						// add rowspan information to table element
 						if ($rowspan > 1) {
 							$trsid = array_push($dom[$table_el]['rowspans'], array('trid' => $trid, 'rowspan' => $rowspan, 'mrowspan' => $rowspan, 'colspan' => $colspan, 'startpage' => $this->page, 'startcolumn' => $this->current_column, 'startx' => $this->x, 'starty' => $this->y));
+						}
+						if (!isset($dom[$trid]['cellpos']) || !is_array($dom[$trid]['cellpos'])) {
+							$dom[$trid]['cellpos'] = array();
 						}
 						$cellid = array_push($dom[$trid]['cellpos'], array('startx' => $this->x));
 						if ($rowspan > 1) {
