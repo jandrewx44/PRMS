@@ -51,7 +51,31 @@ register_shutdown_function(function () use (&$isJsonRequest) {
 });
 
 try {
-	$connect = new PDO("mysql:host=localhost;dbname=2906898_mpcdatabase", "root", "");
+	$getEnvValue = function ($keys, $default = '') {
+		foreach ((array)$keys as $key) {
+			$value = getenv($key);
+			if ($value !== false && $value !== '') {
+				return $value;
+			}
+			if (isset($_ENV[$key]) && $_ENV[$key] !== '') {
+				return $_ENV[$key];
+			}
+			if (isset($_SERVER[$key]) && $_SERVER[$key] !== '') {
+				return $_SERVER[$key];
+			}
+		}
+		return $default;
+	};
+
+	// Coolify/container setup: use service hostname from env, never 127.0.0.1.
+	$dbHost = $getEnvValue(array('DB_HOST', 'MYSQL_HOST', 'COOLIFY_DATABASE_HOST'), 'mysql');
+	$dbPort = $getEnvValue(array('DB_PORT', 'MYSQL_PORT', 'COOLIFY_DATABASE_PORT'), '3306');
+	$dbName = $getEnvValue(array('DB_DATABASE', 'MYSQL_DATABASE', 'DB_NAME'), '2906898_mpcdatabase');
+	$dbUser = $getEnvValue(array('DB_USERNAME', 'MYSQL_USER', 'DB_USER'), 'root');
+	$dbPass = $getEnvValue(array('DB_PASSWORD', 'MYSQL_PASSWORD', 'DB_PASS'), '');
+
+	$dsn = "mysql:host={$dbHost};port={$dbPort};dbname={$dbName};charset=utf8mb4";
+	$connect = new PDO($dsn, $dbUser, $dbPass);
 	$connect->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$connect->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
