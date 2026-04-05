@@ -6,7 +6,22 @@
       </div>
     </div>
 
-  </footer>
+</footer>
+
+  <div class="modal fade" id="review_feedback_modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="review_feedback_title">Feedback</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="review_feedback_body"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -85,6 +100,14 @@ $(document).ready(function(){
    
 	var rating_data = 0;
 
+    function showReviewMessage(title, message) {
+        $('#review_feedback_title').text(title);
+        $('#review_feedback_body').text(message);
+        var modalEl = document.getElementById('review_feedback_modal');
+        var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+        modal.show();
+    }
+
     $('#add_review').click(function(){
 
         $('#review_modal').modal('show');
@@ -146,7 +169,7 @@ $(document).ready(function(){
 
         if(user_name == '' || user_review == '')
         {
-            alert("Please Fill Both Field");
+            showReviewMessage('Incomplete Form', 'Please fill both fields.');
             return false;
         }
         else
@@ -160,14 +183,14 @@ $(document).ready(function(){
                     if (typeof data === 'string' && data.indexOf('Successfully Submitted') !== -1) {
                         $('#review_modal').modal('hide');
                         load_rating_data();
-                        alert('Your Review & Rating Successfully Submitted');
+                        showReviewMessage('Success', 'Your Review & Rating Successfully Submitted');
                     } else {
-                        alert('Unable to submit review right now. Please try again later.');
+                        showReviewMessage('Notice', 'Unable to submit review right now. Please try again later.');
                     }
                 },
                 error:function()
                 {
-                    alert('Unable to submit review right now. Please try again later.');
+                    showReviewMessage('Notice', 'Unable to submit review right now. Please try again later.');
                 }
             })
         }
