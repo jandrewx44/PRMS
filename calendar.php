@@ -128,17 +128,19 @@ function build_calendar($month, $year) {
                         $stmt->execute();
                         $result =$stmt->get_result();
                         $resource = $result->fetch_assoc();
-                        $bookingslots = $resource['TotalBooked'];
-                        if($totalbookings==$bookingslots){
+                        $bookingslots = (int)$resource['TotalBooked'];
+                        $totalbookings = (int)$totalbookings;
+                        $availableSlots = max(0, $totalbookings - $bookingslots);
+
+                        if($bookingslots >= $totalbookings || $availableSlots === 0){
                             $calendar.="<td class='$today bg-001685'><h4>$currentDay</h4>Fully Booked";
                         }else{
-                            $availableSlots =$totalbookings-$bookingslots;
                             $calendar.="<td class='$today text-nowrap bg-00856F' id='showslots' data-ddd='$date' data-sdate='$date' onclick='bookDate(this);' style='cursor:pointer'><h4>$currentDay</h4>$availableSlots Available"; 
                         }    
                 
                     }else{  
                       
-                         $calendar.="<td class='text-nowrap bg-005885'><h4>$currentDay</h4>No Available";
+                         $calendar.="<td class='text-nowrap bg-005885'><h4>$currentDay</h4>No Slots Available";
                     }
                 }
             }

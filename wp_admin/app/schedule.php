@@ -112,12 +112,13 @@
                       $stmt_total->execute();
                       $rows_result=$stmt_total->get_result();
                       $results=$rows_result->fetch_assoc();
-                      $bookingslots=$results['TotalBooked'];
+                      $bookingslots=(int)$results['TotalBooked'];
+                      $totalbookings=(int)$totalbookings;
+                      $availableSlots = max(0, $totalbookings - $bookingslots);
 
-                      if($totalbookings==$bookingslots){
+                      if($bookingslots >= $totalbookings || $availableSlots === 0){
                         $STATUS='<label class="text-danger">Fully Booked</label>';
                       }else{
-                        $availableSlots =$totalbookings-$bookingslots;
                         $STATUS='<label class="text-primary">'.$totalbookings.'</label>/<label class="text-success">'.$availableSlots.' Available</label>';
                       }
                       ?>

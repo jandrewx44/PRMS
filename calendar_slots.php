@@ -17,9 +17,11 @@ while($row=$result->fetch_assoc()){
     if($sqlslots->execute()){
     $slot_row=$sqlslots->get_result();
     $resultss=$slot_row->fetch_assoc();
-    $bookingslots=$resultss['TotalBooked'];
+    $bookingslots=(int)$resultss['TotalBooked'];
+    $totalbookings=(int)$totalbookings;
+    $availableSlots = max(0, $totalbookings - $bookingslots);
 
-    if($totalbookings==$bookingslots){
+    if($bookingslots >= $totalbookings || $availableSlots === 0){
       echo '
       <div class="form-check">
       <input class="form-check-input" type="radio" disabled>
@@ -27,7 +29,6 @@ while($row=$result->fetch_assoc()){
     </div>
       ';
     }else{
-      $availableSlots =$totalbookings-$bookingslots;
       echo "
       <div class='form-check'>
         <input type='radio' id='timeCheckbox' data-stime='$selected_time' onclick='getTime(this);' class='form-check-input' name='SELECTED_TIME' required>
