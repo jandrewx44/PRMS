@@ -157,11 +157,17 @@ $(document).ready(function(){
                 data:{rating_data:rating_data, user_name:user_name, user_review:user_review},
                 success:function(data)
                 {
-                    $('#review_modal').modal('hide');
-
-                    load_rating_data();
-
-                    alert(data);
+                    if (typeof data === 'string' && data.indexOf('Successfully Submitted') !== -1) {
+                        $('#review_modal').modal('hide');
+                        load_rating_data();
+                        alert('Your Review & Rating Successfully Submitted');
+                    } else {
+                        alert('Unable to submit review right now. Please try again later.');
+                    }
+                },
+                error:function()
+                {
+                    alert('Unable to submit review right now. Please try again later.');
                 }
             })
         }
@@ -178,6 +184,9 @@ $(document).ready(function(){
             data:{action:'load_data'},
             dataType:"JSON",
             success:function(data) {
+                if (!data || typeof data !== 'object') {
+                    return;
+                }
                 $('#average_rating').text(data.average_rating);
                 $('#total_review').text(data.total_review);
 
@@ -202,15 +211,12 @@ $(document).ready(function(){
 
                 $('#total_one_star_review').text(data.one_star_review);
 
-                $('#five_star_progress').css('width', (data.five_star_review/data.total_review) * 100 + '%');
-
-                $('#four_star_progress').css('width', (data.four_star_review/data.total_review) * 100 + '%');
-
-                $('#three_star_progress').css('width', (data.three_star_review/data.total_review) * 100 + '%');
-
-                $('#two_star_progress').css('width', (data.two_star_review/data.total_review) * 100 + '%');
-
-                $('#one_star_progress').css('width', (data.one_star_review/data.total_review) * 100 + '%');
+                var safeTotal = data.total_review > 0 ? data.total_review : 1;
+                $('#five_star_progress').css('width', (data.five_star_review/safeTotal) * 100 + '%');
+                $('#four_star_progress').css('width', (data.four_star_review/safeTotal) * 100 + '%');
+                $('#three_star_progress').css('width', (data.three_star_review/safeTotal) * 100 + '%');
+                $('#two_star_progress').css('width', (data.two_star_review/safeTotal) * 100 + '%');
+                $('#one_star_progress').css('width', (data.one_star_review/safeTotal) * 100 + '%');
 
                 if(data.review_data.length > 0)
                 {
@@ -263,6 +269,9 @@ $(document).ready(function(){
 
                     $('#review_content').html(html);
                 }
+            },
+            error:function() {
+                // Keep UI stable without exposing backend responses.
             }
         })
     }
