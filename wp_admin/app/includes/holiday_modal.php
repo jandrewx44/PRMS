@@ -100,6 +100,28 @@
         </div>
     </div>
 </div>
-<!-- delete functionality removed by request -->
+<!---FOR DELETE---->
+<div class="modal fade" id="delete_holiday" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title"><span class="fa fa-question-circle"></span> PLEASE CONFIRM</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="holiday_delete.php?return=<?php echo basename($_SERVER['PHP_SELF']); ?>" method="POST">
+            <div class="modal-body">
+                 <input type="hidden" id="del_holid" name="del_holid">
+                <p>Are you sure you want to delete this holiday?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> CANCEL</button>
+                <button type="submit" name="submit" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> DELETE</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 

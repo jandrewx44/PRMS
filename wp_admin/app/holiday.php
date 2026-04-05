@@ -108,6 +108,7 @@
                           <td align="right">
                           <div class="btn-group">
                             <button data-holid="<?=$row['id'];?>" data-blockeday="<?=$row['blocked_date'];?>" data-description="<?=$row['blocked_name'];?>" onclick="editHoliday(this);"  class="btn bg-primary btn-sm edit"><i class="fa-solid fa fa-edit"></i> </button>
+                            <button data-holid="<?=$row['id'];?>" onclick="deleteHoliday(this);" class="btn btn-danger btn-sm"><i class="fa-solid fa fa-trash"></i></button>
                            </div>
                           </td>
                         </tr>
@@ -145,6 +146,12 @@
     document.getElementById("edit_blocked_date").value=blockeday;
     document.getElementById("edit_description").value=description;
     $("#edit_holiday").modal("show");
+  }
+
+  function deleteHoliday(self){
+    var holid=self.getAttribute("data-holid");
+    document.getElementById("del_holid").value=holid;
+    $("#delete_holiday").modal("show");
   }
 </script> 
 </body>

@@ -108,6 +108,7 @@
                         <td class="text-left"><small><?php echo htmlspecialchars($row['description']); ?></small></td>
                         <td>
                           <button type="button" class="btn btn-xs btn-info edit-event" data-id="<?php echo $row['id']; ?>"><i class="fa fa-edit"></i></button>
+                          <button type="button" class="btn btn-xs btn-danger delete-event" data-id="<?php echo $row['id']; ?>"><i class="fa fa-trash"></i></button>
                         </td>
                       </tr>
                       <?php endwhile; ?>
@@ -188,6 +189,12 @@ $(function(){
     }).fail(function(){
       showEventMessage('Notice', 'Failed to load event.');
     });
+  });
+
+  $(document).on('click', '.delete-event', function(){
+    var id = $(this).data('id');
+    $('#delete_event_id').val(id);
+    $('#delete_event').modal('show');
   });
 });
 </script>

@@ -108,6 +108,28 @@
         </div>
     </div>
 </div>
-<!-- delete functionality removed by request -->
+<!---FOR DELETE---->
+<div class="modal fade" id="delete_event" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title"><span class="fa fa-question-circle"></span> Please Confirm</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="POST" action="events_delete.php?return=<?php echo basename($_SERVER['PHP_SELF']); ?>">
+              <div class="modal-body">
+                <input type="hidden" name="ID" id="delete_event_id">
+                <p>Are you sure you want to delete this event?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> CLOSE</button>
+                <button type="submit" class="btn btn-danger btn-sm" name="submit"><i class="fa fa-trash"></i> DELETE</button>
+              </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
