@@ -70,8 +70,12 @@
               <!-- /.card-header -->
               <div class="card-body">
               <?php
-                $selected_date = isset($_GET['date']) ? $_GET['date'] : '';
-                if($selected_date != ''){
+                $selected_date = '';
+                if (isset($_GET['date']) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $_GET['date'])) {
+                  $selected_date = $_GET['date'];
+                }
+
+                if($selected_date !== ''){
                   $display_date = date('F d, Y', strtotime($selected_date));
                   echo "<div class=\"mb-2\"><strong>SCHEDULES FOR $display_date</strong> &nbsp; <a href=\"events.php\" class=\"btn btn-xs btn-default\">SHOW ALL</a></div>";
                 }
@@ -90,28 +94,64 @@
                     </thead>
                     <tbody>
                       <?php 
-                        @include 'includes/conn.php';
-                        $where = '';
-                        if($selected_date != ''){
-                          $sd = $conn->real_escape_string($selected_date);
-                          $where = "WHERE DATE(start_datetime) = '{$sd}'";
+                        $rows = array();
+
+                        if($selected_date !== ''){
+                          $stmt = $conn->prepare("SELECT * FROM schedule_list WHERE DATE(start_datetime) = ? ORDER BY start_datetime DESC");
+                          $stmt->bind_param('s', $selected_date);
+                          if ($stmt->execute()) {
+                            $result = $stmt->get_result();
+                            while ($row = $result->fetch_assoc()) {
+                              $rows[] = $row;
+                            }
+                          }
+                        } else {
+                          $query = $conn->query("SELECT * FROM schedule_list ORDER BY start_datetime DESC");
+                          if ($query) {
+                            while ($row = $query->fetch_assoc()) {
+                              $rows[] = $row;
+                            }
+                          }
                         }
-                        $q = $conn->query("SELECT * FROM schedule_list {$where} ORDER BY start_datetime DESC");
+
                         $i = 1;
-                        while($row = $q->fetch_assoc()):
+                        if (count($rows) === 0):
+                      ?>
+                      <tr>
+                        <td colspan="6" class="text-center text-muted">No events found.</td>
+                      </tr>
+                      <?php else: ?>
+                      <?php foreach($rows as $row): ?>
+                      <?php
+                        $title = htmlspecialchars((string)$row['title'], ENT_QUOTES, 'UTF-8');
+                        $description = htmlspecialchars((string)$row['description'], ENT_QUOTES, 'UTF-8');
+                        $startDateValue = substr((string)$row['start_datetime'], 0, 10);
+                        $endDateValue = substr((string)$row['end_datetime'], 0, 10);
+
+                        $startDateLabel = $startDateValue !== '' ? date("M d, Y", strtotime($startDateValue)) : 'N/A';
+                        $endDateLabel = $endDateValue !== '' ? date("M d, Y", strtotime($endDateValue)) : 'N/A';
                       ?>
                       <tr class="text-center">
                         <td><?php echo $i++; ?></td>
-                        <td class="font-weight-bold text-maroon text-left"><?php echo htmlspecialchars($row['title']); ?></td>
-                        <td><small><?php echo date("M d, Y", strtotime($row['start_datetime'])); ?></small></td>
-                        <td><small><?php echo date("M d, Y", strtotime($row['end_datetime'])); ?></small></td>
-                        <td class="text-left"><small><?php echo htmlspecialchars($row['description']); ?></small></td>
+                        <td class="font-weight-bold text-maroon text-left"><?php echo $title; ?></td>
+                        <td><small><?php echo $startDateLabel; ?></small></td>
+                        <td><small><?php echo $endDateLabel; ?></small></td>
+                        <td class="text-left"><small><?php echo $description; ?></small></td>
                         <td>
-                          <button type="button" class="btn btn-xs btn-info edit-event" data-id="<?php echo $row['id']; ?>"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-xs btn-danger delete-event" data-id="<?php echo $row['id']; ?>"><i class="fa fa-trash"></i></button>
+                          <button
+                            type="button"
+                            class="btn btn-xs btn-info edit-event"
+                            data-id="<?php echo (int)$row['id']; ?>"
+                            data-title="<?php echo $title; ?>"
+                            data-description="<?php echo $description; ?>"
+                            data-start="<?php echo htmlspecialchars($startDateValue, ENT_QUOTES, 'UTF-8'); ?>"
+                            data-end="<?php echo htmlspecialchars($endDateValue, ENT_QUOTES, 'UTF-8'); ?>">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                          <button type="button" class="btn btn-xs btn-danger delete-event" data-id="<?php echo (int)$row['id']; ?>"><i class="fa fa-trash"></i></button>
                         </td>
                       </tr>
-                      <?php endwhile; ?>
+                      <?php endforeach; ?>
                       <?php for($j = $i; $j <= 10; $j++): ?>
                       <tr style="height: 45px;">
                         <td class="text-center text-muted"><?php echo $j; ?></td>
@@ -122,6 +162,7 @@
                         <td></td>
                       </tr>
                       <?php endfor; ?>
+                      <?php endif; ?>
                     </tbody>
                   </table>
                 </div>
@@ -160,7 +201,7 @@
 
  
 <script>
-// Wire Edit buttons to open modal and load data
+// Wire Events page buttons and form validation.
 $(function(){
   function showEventMessage(title, message){
     $('#event_feedback_title').text(title);
@@ -168,31 +209,77 @@ $(function(){
     $('#event_feedback_modal').modal('show');
   }
 
+  function isDateRangeValid(startDate, endDate){
+    if (!startDate || !endDate) {
+      return false;
+    }
+    return startDate <= endDate;
+  }
+
+  function syncEndDateMin(startSelector, endSelector){
+    var startDate = $(startSelector).val();
+    $(endSelector).attr('min', startDate || '');
+    if (startDate && $(endSelector).val() && $(endSelector).val() < startDate) {
+      $(endSelector).val(startDate);
+    }
+  }
+
+  $('#add').on('show.bs.modal', function(){
+    var addForm = document.getElementById('add_event_form');
+    if (addForm) {
+      addForm.reset();
+    }
+    $('#add_end_date').attr('min', '');
+  });
+
+  $('#add_start_date').on('change', function(){
+    syncEndDateMin('#add_start_date', '#add_end_date');
+  });
+
+  $('#edit_start_date').on('change', function(){
+    syncEndDateMin('#edit_start_date', '#edit_end_date');
+  });
+
+  $('#add_event_form').on('submit', function(e){
+    var startDate = $('#add_start_date').val();
+    var endDate = $('#add_end_date').val();
+    if (!isDateRangeValid(startDate, endDate)) {
+      e.preventDefault();
+      showEventMessage('Invalid Dates', 'End date must be the same as or after start date.');
+    }
+  });
+
+  $('#edit_event_form').on('submit', function(e){
+    var startDate = $('#edit_start_date').val();
+    var endDate = $('#edit_end_date').val();
+    if (!isDateRangeValid(startDate, endDate)) {
+      e.preventDefault();
+      showEventMessage('Invalid Dates', 'End date must be the same as or after start date.');
+    }
+  });
+
   $(document).on('click', '.edit-event', function(){
     var id = $(this).data('id');
-    $.ajax({
-      url: 'events_row.php',
-      method: 'POST',
-      data: { id: id },
-      dataType: 'json'
-    }).done(function(row){
-      if(!row || !row.id){
-        showEventMessage('Notice', 'Unable to load event details.');
-        return;
-      }
-      $('.id').val(row.id);
-      $('#edit_title').val(row.title);
-      $('#edit_description').val(row.description);
-      $('#edit_date').val(String(row.start_datetime).split(' ')[0]);
-      $('#edit_time').val(String(row.end_datetime).split(' ')[0]);
-      $('#edit').modal('show');
-    }).fail(function(){
-      showEventMessage('Notice', 'Failed to load event.');
-    });
+    if(!id){
+      showEventMessage('Notice', 'Unable to load event details.');
+      return;
+    }
+
+    $('#edit_event_id').val(id);
+    $('#edit_title').val($(this).data('title') || '');
+    $('#edit_description').val($(this).data('description') || '');
+    $('#edit_start_date').val($(this).data('start') || '');
+    $('#edit_end_date').val($(this).data('end') || '');
+    syncEndDateMin('#edit_start_date', '#edit_end_date');
+    $('#edit').modal('show');
   });
 
   $(document).on('click', '.delete-event', function(){
     var id = $(this).data('id');
+    if(!id){
+      showEventMessage('Notice', 'Unable to select event for deletion.');
+      return;
+    }
     $('#delete_event_id').val(id);
     $('#delete_event').modal('show');
   });

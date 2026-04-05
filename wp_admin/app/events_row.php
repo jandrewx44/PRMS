@@ -1,5 +1,5 @@
 <?php
-include 'includes/conn.php';
+include 'includes/session.php';
 header('Content-Type: application/json');
 
 if (!isset($_POST['id'])) {

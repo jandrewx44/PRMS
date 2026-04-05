@@ -9,7 +9,7 @@
 			  </button>
 			</div>
           	<div class="modal-body">
-            	<form class="form-horizontal" method="POST" action="events_add.php" enctype="multipart/form-data">
+            	<form class="form-horizontal" id="add_event_form" method="POST" action="events_add.php?return=<?php echo urlencode(basename($_SERVER['PHP_SELF']).'?home=events'); ?>" enctype="multipart/form-data">
           		  <div class="row">
                     <div class="col-sm-12">
                        <div class="form-group">
@@ -32,14 +32,14 @@
                     <div class="col-sm-12">
                        <div class="form-group">
                              <label for="lastname" class="control-label">START DATE</label>
-                            <input type="date" class="form-control"  name="start_datetime" required>
+                            <input type="date" class="form-control" id="add_start_date" name="start_datetime" required>
                         </div>
                     </div>
 
                     <div class="col-sm-12">
                        <div class="form-group">
                              <label for="lastname" class="control-label">END DATE</label>
-                             <input type="date" class="form-control" name="end_datetime" required>
+                             <input type="date" class="form-control" id="add_end_date" name="end_datetime" required>
                         </div>
                     </div>
                 </div><!----row-->
@@ -63,12 +63,12 @@
 			  </button>
 			</div>
           	<div class="modal-body">
-            	<form class="form-horizontal" method="POST" action="events_edit.php" enctype="multipart/form-data">
+            	<form class="form-horizontal" id="edit_event_form" method="POST" action="events_edit.php?return=<?php echo urlencode(basename($_SERVER['PHP_SELF']).'?home=events'); ?>" enctype="multipart/form-data">
           		  <div class="row">
                     <div class="col-sm-12">
                        <div class="form-group">
                              <label for="lastname" class="control-label">TITLE</label>
-                             <input type="hidden" class="form-control id" name="id" required>
+                             <input type="hidden" class="form-control id" id="edit_event_id" name="id" required>
                             <select class="form-control" id="edit_title" name="title" required>
                               <option value="">-- Select Title --</option>
                               <option value="MARRIAGE">MARRIAGE</option>
@@ -87,14 +87,14 @@
                     <div class="col-sm-12">
                        <div class="form-group">
                              <label for="lastname" class="control-label">START DATE</label>
-                            <input type="date" class="form-control" id="edit_date" name="start_datetime" required>
+                            <input type="date" class="form-control" id="edit_start_date" name="start_datetime" required>
                         </div>
                     </div>
 
                     <div class="col-sm-12">
                        <div class="form-group">
                              <label for="lastname" class="control-label">END DATE</label>
-                             <input type="date" class="form-control" id="edit_time" name="end_datetime" required>
+                             <input type="date" class="form-control" id="edit_end_date" name="end_datetime" required>
                         </div>
                     </div>
 
@@ -118,7 +118,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <form method="POST" action="events_delete.php?return=<?php echo basename($_SERVER['PHP_SELF']); ?>">
+            <form method="POST" action="events_delete.php?return=<?php echo urlencode(basename($_SERVER['PHP_SELF']).'?home=events'); ?>">
               <div class="modal-body">
                 <input type="hidden" name="ID" id="delete_event_id">
                 <p>Are you sure you want to delete this event?</p>
