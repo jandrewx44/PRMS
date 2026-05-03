@@ -126,10 +126,12 @@ if($query->num_rows > 0){ $logo_setting = $query->fetch_assoc(); $right_logo = '
 
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->AddPage();
-$pdf->SetLineStyle(array('width' => 0.4, 'color' => array(0,0,0)));
-$pdf->Rect(7, 7, 196, 283);
-$pdf->Rect(9, 9, 192, 279);
-$pdf->SetY(13);
+$pdf->SetDrawColor(70,70,70);
+$pdf->SetLineWidth(0.45);
+$pdf->RoundedRect(7, 7, 196, 283, 5, '1111');
+$pdf->SetLineWidth(0.25);
+$pdf->RoundedRect(9, 9, 192, 279, 4, '1111');
+$pdf->SetY(15);
 
 list($confirmedDay, $confirmedMonth, $confirmedYear) = date_parts($CONFIRMED_DATE);
 
@@ -147,9 +149,11 @@ $givenYear = safe_html($GIVEN_YEAR);
 $pageNo = safe_html($PAGE_NO);
 $bookNo = safe_html($BOOK_NO);
 $regNo = safe_html($REG_NO);
-$diocese = safe_html($SYS_DIOCESE);
+$diocese = safe_html(strtoupper($SYS_DIOCESE));
 $parishName = $churchName !== '' ? $churchName : safe_html($SYS_CHURCH_NAME);
 $parishAddress = $churchAddress !== '' ? $churchAddress : safe_html($SYS_ADDRESS);
+$parishOffice = $parishName;
+$baptismParts = date_parts($DOB_BAPTISM);
 
 list($sponsorLine1, $sponsorLine2) = sponsor_lines($SPONSORS);
 
@@ -161,7 +165,7 @@ $contents = '
     <td align="center" style="height:2mm;">'.$crestHtml.'</td>
   </tr>
   <tr>
-    <td align="center" style="font-family:times; font-size:20px; font-weight:bold; color:#0B6B2E; letter-spacing:0.4px;">'.$diocese.'</td>
+    <td align="center" style="font-family:times; font-size:24px; font-weight:bold; color:#0B6B2E;">'.$diocese.'</td>
   </tr>
 </table>
 <br>
@@ -177,7 +181,7 @@ $contents = '
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="0">
-  <tr><td align="center" style="font-family:times; font-size:24px; font-weight:bold; letter-spacing:0.6px;">CERTIFICATE OF CONFIRMATION</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:28px; font-weight:bold; color:#665f57;">CERTIFICATE OF CONFIRMATION</td></tr>
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
@@ -186,62 +190,95 @@ $contents = '
     <td width="76%" style="border-bottom:0.25px solid black;">'.$childName.'</td>
   </tr>
   <tr>
-    <td width="22%">Date of Baptism</td>
-    <td width="78%" style="border-bottom:0.25px solid black;">'.safe_html($DOB_BAPTISM).'</td>
+    <td width="12%">child of</td>
+    <td width="43%" style="border-bottom:0.25px solid black;">'.$father.'</td>
+    <td width="6%" align="center">and</td>
+    <td width="39%" style="border-bottom:0.25px solid black;">'.$mother.'</td>
   </tr>
   <tr>
-    <td width="29%">Place of Baptism</td>
-    <td width="71%" style="border-bottom:0.25px solid black;">'.$pob.'</td>
+    <td width="20%">resident of</td>
+    <td width="80%" style="border-bottom:0.25px solid black;">'.safe_html($PARENTS_ADDRESS).'</td>
   </tr>
   <tr>
-    <td width="26%">Name of Father</td>
-    <td width="74%" style="border-bottom:0.25px solid black;">'.$father.'</td>
+    <td width="24%">was baptized at</td>
+    <td width="76%" style="border-bottom:0.25px solid black;">'.$pob.'</td>
   </tr>
   <tr>
-    <td width="26%">Maiden Name of Mother</td>
-    <td width="74%" style="border-bottom:0.25px solid black;">'.$mother.'</td>
+    <td width="14%">on the</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$baptismParts[0].'</td>
+    <td width="12%">day of</td>
+    <td width="40%" style="border-bottom:0.25px solid black;">'.$baptismParts[1].'</td>
+    <td width="3%">,</td>
+    <td width="13%" style="border-bottom:0.25px solid black;">'.$baptismParts[2].'</td>
+  </tr>
+</table>
+<br><br>
+<table width="100%" border="0" cellpadding="0">
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold; color:#665f57;">AND WAS CONFIRMED ACCORDING TO THE</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold; color:#665f57;">ROMAN CATHOLIC RITE</td></tr>
+</table>
+<br><br>
+<table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
+  <tr>
+    <td width="14%">on the</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$confirmedDay.'</td>
+    <td width="12%">day of</td>
+    <td width="40%" style="border-bottom:0.25px solid black;">'.$confirmedMonth.'</td>
+    <td width="3%">,</td>
+    <td width="13%" style="border-bottom:0.25px solid black;">'.$confirmedYear.'</td>
   </tr>
   <tr>
-    <td width="26%">Address of Parents</td>
-    <td width="74%" style="border-bottom:0.25px solid black;">'.safe_html($PARENTS_ADDRESS).'</td>
-  </tr>
-  <tr>
-    <td colspan="2"><br>Solemnly received the Sacrament of Confirmation according to the Rite of the Roman Catholic Church at the</td>
+    <td width="29%">in this Parish Church by Rev.</td>
+    <td width="71%" style="border-bottom:0.25px solid black;">'.$confirmedBy.'</td>
   </tr>
   <tr>
     <td width="31%">Name of Parish</td>
-    <td style="float:left;text-transform:capitalize">'.$parishName.'</td>
+    <td width="69%" style="border-bottom:0.25px solid black;">'.$parishName.'</td>
   </tr>
   <tr>
     <td width="31%">Address of Parish</td>
-    <td>'.$parishAddress.'</td>
+    <td width="69%" style="border-bottom:0.25px solid black;">'.$parishAddress.'</td>
   </tr>
   <tr>
-    <td width="31%">Date of Confirmation</td>
-    <td style="border-bottom:0.25px solid black;">'.$confirmedMonth.' '.$confirmedDay.', '.$confirmedYear.'</td>
+    <td width="26%">and the sponsors were:</td>
+    <td width="44%" style="border-bottom:0.25px solid black;">'.$sponsorLine1.'</td>
+    <td width="6%">of</td>
+    <td width="24%" style="border-bottom:0.25px solid black;"></td>
   </tr>
   <tr>
-    <td>Confirmed by</td>
-    <td style="border-bottom:0.25px solid black;">'.$confirmedBy.'</td>
+    <td width="26%"></td>
+    <td width="44%" style="border-bottom:0.25px solid black;">'.$sponsorLine2.'</td>
+    <td width="6%">of</td>
+    <td width="24%" style="border-bottom:0.25px solid black;"></td>
   </tr>
   <tr>
-    <td width="31%"><br>Sponsors</td>
-    <td width="69%">'.$sponsorLine1.'</td>
+    <td width="75%">The above is an authentic copy of the record as it appears on Page</td>
+    <td width="25%" style="border-bottom:0.25px solid black;">'.$pageNo.'</td>
   </tr>
   <tr>
-    <td></td>
-    <td style="border-bottom:0.25px solid black;">'.$sponsorLine2.'</td>
+    <td width="12%">Volume</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$bookNo.'</td>
+    <td width="8%">Line</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$regNo.'</td>
+    <td width="44%">of the Confirmation records on file in</td>
   </tr>
   <tr>
-    <td colspan="2"><br>Notations: '.$notations.'</td>
+    <td colspan="5">this Church.</td>
   </tr>
   <tr>
-    <td colspan="2"><br>In witness thereof, hereunto I affixed my signature and the seal of the Parish</td>
+    <td width="30%">Given at the Parish office of</td>
+    <td width="70%" colspan="4" style="border-bottom:0.25px solid black;">'.$parishOffice.'</td>
   </tr>
   <tr>
     <td width="10%">this</td>
-    <td width="90%" style="border-bottom:0.25px solid black;">'.$givenDay.' day of '.$givenMonth.', '.$givenYear.'</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$givenDay.'</td>
+    <td width="10%">day of</td>
+    <td width="36%" style="border-bottom:0.25px solid black;">'.$givenMonth.'</td>
+    <td width="6%">,</td>
+    <td width="20%" style="border-bottom:0.25px solid black;">'.$givenYear.'</td>
   </tr>
+  <tr><td colspan="6">&nbsp;</td></tr>
+  <tr><td colspan="6">Notations: '.$notations.'</td></tr>
 </table>';
 
 $pdf->writeHTML($contents,true, false, true, false, '');

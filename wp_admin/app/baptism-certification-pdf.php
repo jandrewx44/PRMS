@@ -179,7 +179,7 @@ if($query->num_rows > 0){
 	$pageNo = safe_html($PAGE_NO);
 	$bookNo = safe_html($BOOK_NO);
 	$regNo = safe_html($REG_NO);
-	$diocese = safe_html($SYS_DIOCESE);
+	$diocese = safe_html(strtoupper($SYS_DIOCESE));
 	$parishName = $churchName !== '' ? $churchName : safe_html($SYS_CHURCH_NAME);
 	$parishAddress = $churchAddress !== '' ? $churchAddress : safe_html($SYS_ADDRESS);
 	$parishOffice = $parishName;
@@ -190,10 +190,12 @@ if($query->num_rows > 0){
 
 	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
     $pdf->AddPage();
-	$pdf->SetLineStyle(array('width' => 0.4, 'color' => array(0,0,0)));
-	$pdf->Rect(7, 7, 196, 283);
-	$pdf->Rect(9, 9, 192, 279);
-	$pdf->SetY(13);
+	$pdf->SetDrawColor(70,70,70);
+	$pdf->SetLineWidth(0.45);
+	$pdf->RoundedRect(7, 7, 196, 283, 5, '1111');
+	$pdf->SetLineWidth(0.25);
+	$pdf->RoundedRect(9, 9, 192, 279, 4, '1111');
+	$pdf->SetY(15);
 
     $contents = '
 <table width="100%" border="0" cellpadding="0">
@@ -201,7 +203,7 @@ if($query->num_rows > 0){
     <td align="center" style="height:2mm;">'.$crestHtml.'</td>
   </tr>
   <tr>
-    <td align="center" style="font-family:times; font-size:20px; font-weight:bold; color:#0B6B2E; letter-spacing:0.4px;">'.$diocese.'</td>
+    <td align="center" style="font-family:times; font-size:24px; font-weight:bold; color:#0B6B2E;">'.$diocese.'</td>
   </tr>
 </table>
 <br>
@@ -217,7 +219,7 @@ if($query->num_rows > 0){
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="0">
-  <tr><td align="center" style="font-family:times; font-size:24px; font-weight:bold; letter-spacing:0.6px;">CERTIFICATE OF BAPTISM</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:28px; font-weight:bold; color:#665f57;">CERTIFICATE OF BAPTISM</td></tr>
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
@@ -252,8 +254,8 @@ if($query->num_rows > 0){
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="0">
-  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold;">AND WAS BAPTIZED ACCORDING TO THE</td></tr>
-  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold;">ROMAN CATHOLIC RITE</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold; color:#665f57;">AND WAS BAPTIZED ACCORDING TO THE</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold; color:#665f57;">ROMAN CATHOLIC RITE</td></tr>
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
@@ -282,23 +284,22 @@ if($query->num_rows > 0){
     <td width="24%" style="border-bottom:0.25px solid black;"></td>
   </tr>
   <tr>
-    <td colspan="7">The above is an authentic copy of the record as it appears on Page</td>
+    <td width="75%">The above is an authentic copy of the record as it appears on Page</td>
+    <td width="25%" style="border-bottom:0.25px solid black;">'.$pageNo.'</td>
   </tr>
   <tr>
-    <td width="8%">Page</td>
-    <td width="18%" style="border-bottom:0.25px solid black;">'.$pageNo.'</td>
-    <td width="10%">Volume</td>
+    <td width="12%">Volume</td>
     <td width="18%" style="border-bottom:0.25px solid black;">'.$bookNo.'</td>
     <td width="8%">Line</td>
-    <td width="16%" style="border-bottom:0.25px solid black;">'.$regNo.'</td>
-    <td width="22%">of the Baptismal</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$regNo.'</td>
+    <td width="44%">of the Baptismal records on file in</td>
   </tr>
   <tr>
-    <td colspan="7">records on file in this Church.</td>
+    <td colspan="5">this Church.</td>
   </tr>
   <tr>
     <td width="30%">Given at the Parish office of</td>
-    <td width="70%" colspan="6" style="border-bottom:0.25px solid black;">'.$parishOffice.'</td>
+    <td width="70%" colspan="4" style="border-bottom:0.25px solid black;">'.$parishOffice.'</td>
   </tr>
   <tr>
     <td width="10%">this</td>
@@ -306,7 +307,7 @@ if($query->num_rows > 0){
     <td width="10%">day of</td>
     <td width="36%" style="border-bottom:0.25px solid black;">'.$givenMonth.'</td>
     <td width="6%">,</td>
-    <td width="20%" colspan="2" style="border-bottom:0.25px solid black;">'.$givenYear.'</td>
+    <td width="20%" style="border-bottom:0.25px solid black;">'.$givenYear.'</td>
   </tr>
   <tr><td colspan="7">&nbsp;</td></tr>
   <tr><td colspan="7">Notations: '.$notations.'</td></tr>

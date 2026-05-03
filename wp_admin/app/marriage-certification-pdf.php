@@ -119,10 +119,12 @@ if($query->num_rows > 0){ $logo_setting = $query->fetch_assoc(); $right_logo = '
 
 $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 $pdf->AddPage();
-$pdf->SetLineStyle(array('width' => 0.4, 'color' => array(0,0,0)));
-$pdf->Rect(7, 7, 196, 283);
-$pdf->Rect(9, 9, 192, 279);
-$pdf->SetY(13);
+$pdf->SetDrawColor(70,70,70);
+$pdf->SetLineWidth(0.45);
+$pdf->RoundedRect(7, 7, 196, 283, 5, '1111');
+$pdf->SetLineWidth(0.25);
+$pdf->RoundedRect(9, 9, 192, 279, 4, '1111');
+$pdf->SetY(15);
 
 $groom = safe_html($GROOM_NAME);
 $groomRes = safe_html($GROOM_RESIDENCE);
@@ -139,40 +141,15 @@ $solemnPriest = safe_html($SOLEMNIZING_PRIEST);
 $givenDay = safe_html($GIVEN_DAY);
 $givenMonth = safe_html($GIVEN_MONTH);
 $givenYear = safe_html($GIVEN_YEAR);
-
-if($fromMarriageRecord){
-  $groomParentRows = '
-  <tr>
-    <td>Parents of Groom</td>
-    <td style="border-bottom:0.25px solid black;">'.$groomFather.'</td>
-  </tr>';
-  $brideParentRows = '
-  <tr>
-    <td>Parents of Bride</td>
-    <td style="border-bottom:0.25px solid black;">'.$brideFather.'</td>
-  </tr>';
-}else{
-  $groomParentRows = '
-  <tr>
-    <td>Name of Father</td>
-    <td style="border-bottom:0.25px solid black;">'.$groomFather.'</td>
-  </tr>
-  <tr>
-    <td>Name of Mother</td>
-    <td style="border-bottom:0.25px solid black;">'.$groomMother.'</td>
-  </tr>';
-  $brideParentRows = '
-  <tr>
-    <td>Name of Father</td>
-    <td style="border-bottom:0.25px solid black;">'.$brideFather.'</td>
-  </tr>
-  <tr>
-    <td>Name of Mother</td>
-    <td style="border-bottom:0.25px solid black;">'.$brideMother.'</td>
-  </tr>';
-}
-
-$diocese = safe_html($SYS_DIOCESE);
+$pageNo = safe_html($PAGE_NO);
+$bookNo = safe_html($BOOK_NO);
+$regNo = safe_html($REG_NO);
+$groomParentLine = $groomMother !== '' ? $groomFather.' and '.$groomMother : $groomFather;
+$brideParentLine = $brideMother !== '' ? $brideFather.' and '.$brideMother : $brideFather;
+$parishName = safe_html($SYS_CHURCH_NAME);
+$parishAddress = safe_html($SYS_ADDRESS);
+$parishOffice = $parishName;
+$diocese = safe_html(strtoupper($SYS_DIOCESE));
 $crestHtml = ($right_logo !== '' && file_exists($right_logo)) ? '<img src="'.$right_logo.'" width="34">' : '';
 
 $contents = '
@@ -181,68 +158,101 @@ $contents = '
     <td align="center" style="height:2mm;">'.$crestHtml.'</td>
   </tr>
   <tr>
-    <td align="center" style="font-family:times; font-size:20px; font-weight:bold; color:#0B6B2E; letter-spacing:0.4px;">'.safe_html($SYS_DIOCESE).'</td>
+    <td align="center" style="font-family:times; font-size:24px; font-weight:bold; color:#0B6B2E;">'.$diocese.'</td>
   </tr>
 </table>
 <br>
 <table width="100%" border="0" cellpadding="1.4" style="font-family:times; font-size:12.5px;">
   <tr>
     <td width="19%" style="font-weight:bold;">PARISH OF</td>
-    <td width="81%" style="border-bottom:0.25px solid black;">'.safe_html($SYS_CHURCH_NAME).'</td>
+    <td width="81%" style="border-bottom:0.25px solid black;">'.$parishName.'</td>
   </tr>
   <tr>
     <td width="19%"></td>
-    <td width="81%" style="border-bottom:0.25px solid black;">'.safe_html($SYS_ADDRESS).'</td>
+    <td width="81%" style="border-bottom:0.25px solid black;">'.$parishAddress.'</td>
   </tr>
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="0">
-  <tr><td align="center" style="font-family:times; font-size:24px; font-weight:bold; letter-spacing:0.6px;">CERTIFICATE OF MARRIAGE</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:28px; font-weight:bold; color:#665f57;">CERTIFICATE OF MARRIAGE</td></tr>
 </table>
 <br><br>
 <table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
   <tr>
-    <td width="31%">Name of Groom</td>
-    <td width="69%" style="border-bottom:0.25px solid black;">'.$groom.'</td>
+    <td width="23%">This is to certify that</td>
+    <td width="33%" style="border-bottom:0.25px solid black;">'.$groom.'</td>
+    <td width="8%" align="center">and</td>
+    <td width="36%" style="border-bottom:0.25px solid black;">'.$bride.'</td>
   </tr>
   <tr>
-    <td>Residence</td>
-    <td style="border-bottom:0.25px solid black;">'.$groomRes.'</td>
-  </tr>
-  '.$groomParentRows.'
-  <tr>
-    <td colspan="2"><br>And</td>
+    <td width="17%">Son of</td>
+    <td width="83%" style="border-bottom:0.25px solid black;">'.$groomParentLine.'</td>
   </tr>
   <tr>
-    <td width="31%">Name of Bride</td>
-    <td width="69%" style="border-bottom:0.25px solid black;">'.$bride.'</td>
+    <td width="17%">Daughter of</td>
+    <td width="83%" style="border-bottom:0.25px solid black;">'.$brideParentLine.'</td>
   </tr>
   <tr>
-    <td>Residence</td>
-    <td style="border-bottom:0.25px solid black;">'.$brideRes.'</td>
-  </tr>
-  '.$brideParentRows.'
-  <tr>
-    <td colspan="2"><br>Were solemnly married according to the Rites of the Roman Catholic Church</td>
+    <td width="18%">Groom residence</td>
+    <td width="82%" style="border-bottom:0.25px solid black;">'.$groomRes.'</td>
   </tr>
   <tr>
-    <td width="31%">Place of Marriage</td>
-    <td style="border-bottom:0.25px solid black;">'.$placeMarriage.'</td>
+    <td width="18%">Bride residence</td>
+    <td width="82%" style="border-bottom:0.25px solid black;">'.$brideRes.'</td>
+  </tr>
+</table>
+<br><br>
+<table width="100%" border="0" cellpadding="0">
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold; color:#665f57;">WERE MARRIED ACCORDING TO THE</td></tr>
+  <tr><td align="center" style="font-family:times; font-size:15px; font-weight:bold; color:#665f57;">ROMAN CATHOLIC RITE</td></tr>
+</table>
+<br><br>
+<table width="100%" border="0" cellpadding="1.1" style="font-family:times; font-size:13px;">
+  <tr>
+    <td width="14%">on the</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$dateMarriageParts[0].'</td>
+    <td width="12%">day of</td>
+    <td width="40%" style="border-bottom:0.25px solid black;">'.$dateMarriageParts[1].'</td>
+    <td width="3%">,</td>
+    <td width="13%" style="border-bottom:0.25px solid black;">'.$dateMarriageParts[2].'</td>
   </tr>
   <tr>
-    <td width="31%">Date of Marriage</td>
-    <td style="border-bottom:0.25px solid black;">'.$dateMarriageParts[1].' '.$dateMarriageParts[0].', '.$dateMarriageParts[2].'</td>
+    <td width="29%">in this Parish Church by Rev.</td>
+    <td width="71%" style="border-bottom:0.25px solid black;">'.$solemnPriest.'</td>
   </tr>
   <tr>
-    <td width="31%">Name of Witness(es)</td>
-    <td style="border-bottom:0.25px solid black;">'.$witness.'</td>
+    <td width="24%">Place of Marriage</td>
+    <td width="76%" style="border-bottom:0.25px solid black;">'.$placeMarriage.'</td>
   </tr>
   <tr>
-    <td width="31%">Solemnizing Priest</td>
-    <td style="border-bottom:0.25px solid black;">'.$solemnPriest.'</td>
+    <td width="30%">and the witnesses were:</td>
+    <td width="70%" style="border-bottom:0.25px solid black;">'.$witness.'</td>
   </tr>
   <tr>
-    <td colspan="2"><br>In witness thereof, hereunto I affixed my signature and the seal of the Parish this '.$givenDay.' day of '.$givenMonth.', '.$givenYear.'</td>
+    <td width="75%">The above is an authentic copy of the record as it appears on Page</td>
+    <td width="25%" style="border-bottom:0.25px solid black;">'.$pageNo.'</td>
+  </tr>
+  <tr>
+    <td width="12%">Volume</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$bookNo.'</td>
+    <td width="8%">Line</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$regNo.'</td>
+    <td width="44%">of the Marriage records on file in</td>
+  </tr>
+  <tr>
+    <td colspan="5">this Church.</td>
+  </tr>
+  <tr>
+    <td width="30%">Given at the Parish office of</td>
+    <td width="70%" colspan="4" style="border-bottom:0.25px solid black;">'.$parishOffice.'</td>
+  </tr>
+  <tr>
+    <td width="10%">this</td>
+    <td width="18%" style="border-bottom:0.25px solid black;">'.$givenDay.'</td>
+    <td width="10%">day of</td>
+    <td width="36%" style="border-bottom:0.25px solid black;">'.$givenMonth.'</td>
+    <td width="6%">,</td>
+    <td width="20%" style="border-bottom:0.25px solid black;">'.$givenYear.'</td>
   </tr>
 </table>';
 
@@ -263,7 +273,9 @@ if($signaturePriestName !== ''){
 }
 
 $pdf->SetLineWidth(0.2); $pdf->Line($sigX, $sigLineY, $sigX + $sigBlockWidth, $sigLineY);
+$pdf->SetXY($sigX, $sigLineY + 1.5);
 $pdf->SetFont('times', '', 11);
+$pdf->Cell($sigBlockWidth, 5, 'Parish Priest', 0, 0, 'C');
 if (ob_get_level() > 0) { ob_end_clean(); }
 $pdf->Output('Marriage Certificate.pdf', 'D');
 
