@@ -79,7 +79,7 @@
                     <a href="confirmation-certification-record.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-users"></i> VIEW RECORDS
                     </a>
-                    <a href="FORM-certificate-of-confirmation.php" class="btn btn-tool text-primary">
+					<a href="confirmation-certification-pdf-print.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-download"></i> DOWNLOAD
                     </a>
                   </div>
@@ -109,7 +109,7 @@
                     <a href="marriage-certification-record.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-users"></i> VIEW RECORDS
                     </a>
-                    <a href="FROM-certification-of-marriage-2021.php" class="btn btn-tool text-primary">
+					<a href="marriage-certification-pdf-print.php" class="btn btn-tool text-primary">
                       <i class="fa fa-sharp fa-solid fa-download"></i> DOWNLOAD
                     </a>
                   </div>
