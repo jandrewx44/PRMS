@@ -24,9 +24,6 @@
               <a href="baptismal.php?home=baptismal" class="btn btn-outline-light text-dark bg-white">Baptism</a>
               <a href="confirmation.php?home=confirmation" class="btn btn-outline-light text-dark bg-white">Confirmation</a>
               <a href="marriage.php?home=marriage" class="btn btn-outline-light text-dark bg-white">Marriage</a>
-              <a href="communion.php?home=communion" class="btn btn-primary text-white">Communion</a>
-              <a href="conversion.php?home=conversion" class="btn btn-outline-light text-dark bg-white">Conversion</a>
-              <a href="defunctorum.php?home=defunctorum" class="btn btn-outline-light text-dark bg-white">Death</a>
             </div>
           </div>
         </div>
