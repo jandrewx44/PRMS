@@ -28,8 +28,17 @@ function sponsor_lines($value){
     return array($line1, $line2);
 }
 
+$fromMarriageRecord = false;
+$GROOM_NAME = $GROOM_RESIDENCE = $GROOM_FATHER = $GROOM_MOTHER = '';
+$BRIDE_NAME = $BRIDE_RESIDENCE = $BRIDE_FATHER = $BRIDE_MOTHER = '';
+$PLACE_OF_MARRIAGE = $DATE_OF_MARRIAGE = $NAME_OF_WITNESS = $SOLEMNIZING_PRIEST = '';
+$GIVEN_DAY = date('jS');
+$GIVEN_MONTH = date('F');
+$GIVEN_YEAR = date('Y');
+$BOOK_NO = $PAGE_NO = $REG_NO = '';
+
 if(isset($_GET['MARRIAGEID'])){
-    $MARRIAGEID = $_GET['MARRIAGEID'];
+    $MARRIAGEID = intval($_GET['MARRIAGEID']);
     $sql = "SELECT * FROM tbl_marriage_certificate WHERE MARRIAGEID= '".$MARRIAGEID."'";
     $query = $conn->query($sql);
     if($query->num_rows > 0){
@@ -52,11 +61,32 @@ if(isset($_GET['MARRIAGEID'])){
         $BOOK_NO = mysqli_real_escape_string($conn, ($smtrow['BOOK_NO']));
         $PAGE_NO = mysqli_real_escape_string($conn, ($smtrow['PAGE_NO']));
         $REG_NO = mysqli_real_escape_string($conn, ($smtrow['REG_NO']));
-    } else {
-        $GROOM_NAME = $GROOM_RESIDENCE = $GROOM_FATHER = $GROOM_MOTHER = '';
-        $BRIDE_NAME = $BRIDE_RESIDENCE = $BRIDE_FATHER = $BRIDE_MOTHER = '';
-        $PLACE_OF_MARRIAGE = $DATE_OF_MARRIAGE = $NAME_OF_WITNESS = $SOLEMNIZING_PRIEST = '';
-        $GIVEN_DAY = $GIVEN_MONTH = $GIVEN_YEAR = $BOOK_NO = $PAGE_NO = $REG_NO = '';
+    }
+}elseif(isset($_GET['MARRIAGERECORDID'])){
+    $fromMarriageRecord = true;
+    $MARRIAGERECORDID = intval($_GET['MARRIAGERECORDID']);
+    $sql = "SELECT * FROM tbl_marriage WHERE ID= '".$MARRIAGERECORDID."'";
+    $query = $conn->query($sql);
+    if($query->num_rows > 0){
+        $smtrow = $query->fetch_assoc();
+        $GROOM_NAME = mysqli_real_escape_string($conn, ($smtrow['NAME_MALE']));
+        $GROOM_RESIDENCE = mysqli_real_escape_string($conn, ($smtrow['ACTUAL_ADDRESS_MALE']));
+        $GROOM_FATHER = mysqli_real_escape_string($conn, ($smtrow['PARENTS_MALE']));
+        $GROOM_MOTHER = '';
+        $BRIDE_NAME = mysqli_real_escape_string($conn, ($smtrow['NAME_FEMALE']));
+        $BRIDE_RESIDENCE = mysqli_real_escape_string($conn, ($smtrow['ACTUAL_ADDRESS_FEMALE']));
+        $BRIDE_FATHER = mysqli_real_escape_string($conn, ($smtrow['PARENTS_FEMALE']));
+        $BRIDE_MOTHER = '';
+        $PLACE_OF_MARRIAGE = '';
+        $DATE_OF_MARRIAGE = mysqli_real_escape_string($conn, ($smtrow['DATE_OF_MARRIAGE']));
+        $NAME_OF_WITNESS = trim((string)$smtrow['SPONSORS_MALE']);
+        if(trim((string)$smtrow['SPONSORS_FEMALE']) !== ''){
+            $NAME_OF_WITNESS .= ($NAME_OF_WITNESS !== '' ? ', ' : '').trim((string)$smtrow['SPONSORS_FEMALE']);
+        }
+        $SOLEMNIZING_PRIEST = mysqli_real_escape_string($conn, ($smtrow['MARRIAGE_MINISTER']));
+        $BOOK_NO = mysqli_real_escape_string($conn, ($smtrow['BOOK_NO']));
+        $PAGE_NO = mysqli_real_escape_string($conn, ($smtrow['PAGE_NO']));
+        $REG_NO = mysqli_real_escape_string($conn, ($smtrow['REG_NO']));
     }
 }
 
@@ -110,6 +140,38 @@ $givenDay = safe_html($GIVEN_DAY);
 $givenMonth = safe_html($GIVEN_MONTH);
 $givenYear = safe_html($GIVEN_YEAR);
 
+if($fromMarriageRecord){
+  $groomParentRows = '
+  <tr>
+    <td>Parents of Groom</td>
+    <td style="border-bottom:0.25px solid black;">'.$groomFather.'</td>
+  </tr>';
+  $brideParentRows = '
+  <tr>
+    <td>Parents of Bride</td>
+    <td style="border-bottom:0.25px solid black;">'.$brideFather.'</td>
+  </tr>';
+}else{
+  $groomParentRows = '
+  <tr>
+    <td>Name of Father</td>
+    <td style="border-bottom:0.25px solid black;">'.$groomFather.'</td>
+  </tr>
+  <tr>
+    <td>Name of Mother</td>
+    <td style="border-bottom:0.25px solid black;">'.$groomMother.'</td>
+  </tr>';
+  $brideParentRows = '
+  <tr>
+    <td>Name of Father</td>
+    <td style="border-bottom:0.25px solid black;">'.$brideFather.'</td>
+  </tr>
+  <tr>
+    <td>Name of Mother</td>
+    <td style="border-bottom:0.25px solid black;">'.$brideMother.'</td>
+  </tr>';
+}
+
 $diocese = safe_html($SYS_DIOCESE);
 $crestHtml = ($right_logo !== '' && file_exists($right_logo)) ? '<img src="'.$right_logo.'" width="34">' : '';
 
@@ -147,14 +209,7 @@ $contents = '
     <td>Residence</td>
     <td style="border-bottom:0.25px solid black;">'.$groomRes.'</td>
   </tr>
-  <tr>
-    <td>Name of Father</td>
-    <td style="border-bottom:0.25px solid black;">'.$groomFather.'</td>
-  </tr>
-  <tr>
-    <td>Name of Mother</td>
-    <td style="border-bottom:0.25px solid black;">'.$groomMother.'</td>
-  </tr>
+  '.$groomParentRows.'
   <tr>
     <td colspan="2"><br>And</td>
   </tr>
@@ -166,14 +221,7 @@ $contents = '
     <td>Residence</td>
     <td style="border-bottom:0.25px solid black;">'.$brideRes.'</td>
   </tr>
-  <tr>
-    <td>Name of Father</td>
-    <td style="border-bottom:0.25px solid black;">'.$brideFather.'</td>
-  </tr>
-  <tr>
-    <td>Name of Mother</td>
-    <td style="border-bottom:0.25px solid black;">'.$brideMother.'</td>
-  </tr>
+  '.$brideParentRows.'
   <tr>
     <td colspan="2"><br>Were solemnly married according to the Rites of the Roman Catholic Church</td>
   </tr>

@@ -111,6 +111,7 @@
                             <div class="btn-group">
                             <a href="<?='marriage_update.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-success btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
                             <a href="<?='marriage_info.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-primary btn-sm "><i class="fa-solid fa fa-eye"></i> </a>
+                            <a data-mytooltip="tooltip" data-placement="top" title="PRINT" href="<?='marriage-certification-pdf-print.php?MARRIAGERECORDID='.$row['ID'].'&year='.$ShowYear;?>" target="_blank" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-print"></i> </a>
                             <a data-mytooltip="tooltip" data-placement="top" title="DELETE RECORD" href="<?='marriage_delete.php?q='.$row['ID'].'&year='.$ShowYear;?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa-solid fa fa-trash"></i> </a>
                           </div>
                           </td>
