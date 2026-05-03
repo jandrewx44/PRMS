@@ -14,13 +14,19 @@
                     <div class="col-sm-12">
                        <div class="form-group">
                              <label for="lastname" class="control-label">TITLE</label>
-                            <select class="form-control" name="title" required>
+                            <select class="form-control event-title-select" id="add_title" name="title" data-other-target="#add_other_title_group" required>
                               <option value="">-- Select Title --</option>
                               <option value="MARRIAGE">MARRIAGE</option>
                               <option value="BAPTISM">BAPTISM</option>
                               <option value="MASS">MASS</option>
                               <option value="OTHERS">OTHERS</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" id="add_other_title_group" style="display:none;">
+                       <div class="form-group">
+                             <label for="add_other_title" class="control-label">OTHER TITLE</label>
+                            <input type="text" class="form-control" id="add_other_title" name="other_title" placeholder="Enter event title">
                         </div>
                     </div>
                     <div class="col-sm-12">
@@ -69,13 +75,19 @@
                        <div class="form-group">
                              <label for="lastname" class="control-label">TITLE</label>
                              <input type="hidden" class="form-control id" id="edit_event_id" name="id" required>
-                            <select class="form-control" id="edit_title" name="title" required>
+                            <select class="form-control event-title-select" id="edit_title" name="title" data-other-target="#edit_other_title_group" required>
                               <option value="">-- Select Title --</option>
                               <option value="MARRIAGE">MARRIAGE</option>
                               <option value="BAPTISM">BAPTISM</option>
                               <option value="MASS">MASS</option>
                               <option value="OTHERS">OTHERS</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12" id="edit_other_title_group" style="display:none;">
+                       <div class="form-group">
+                             <label for="edit_other_title" class="control-label">OTHER TITLE</label>
+                            <input type="text" class="form-control" id="edit_other_title" name="other_title" placeholder="Enter event title">
                         </div>
                     </div>
                     <div class="col-sm-12">

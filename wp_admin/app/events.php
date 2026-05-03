@@ -224,12 +224,45 @@ $(function(){
     }
   }
 
+  function syncOtherTitle(select){
+    var target = $($(select).data('other-target'));
+    var input = target.find('input');
+    var show = $(select).val() === 'OTHERS';
+    target.toggle(show);
+    input.prop('required', show);
+    if (!show) {
+      input.val('');
+    }
+  }
+
+  function applyEventTitle(selectSelector, inputSelector, title){
+    var knownTitles = ['MARRIAGE', 'BAPTISM', 'MASS'];
+    var cleanTitle = (title || '').toString();
+    var upperTitle = cleanTitle.toUpperCase();
+    if (knownTitles.indexOf(upperTitle) !== -1) {
+      $(selectSelector).val(upperTitle);
+      $(inputSelector).val('');
+    } else if (cleanTitle !== '') {
+      $(selectSelector).val('OTHERS');
+      $(inputSelector).val(cleanTitle);
+    } else {
+      $(selectSelector).val('');
+      $(inputSelector).val('');
+    }
+    syncOtherTitle($(selectSelector));
+  }
+
   $('#add').on('show.bs.modal', function(){
     var addForm = document.getElementById('add_event_form');
     if (addForm) {
       addForm.reset();
     }
     $('#add_end_date').attr('min', '');
+    syncOtherTitle($('#add_title'));
+  });
+
+  $('.event-title-select').on('change', function(){
+    syncOtherTitle(this);
   });
 
   $('#add_start_date').on('change', function(){
@@ -243,6 +276,11 @@ $(function(){
   $('#add_event_form').on('submit', function(e){
     var startDate = $('#add_start_date').val();
     var endDate = $('#add_end_date').val();
+    if ($('#add_title').val() === 'OTHERS' && !$('#add_other_title').val().trim()) {
+      e.preventDefault();
+      showEventMessage('Missing Title', 'Please enter a title for the other event.');
+      return;
+    }
     if (!isDateRangeValid(startDate, endDate)) {
       e.preventDefault();
       showEventMessage('Invalid Dates', 'End date must be the same as or after start date.');
@@ -252,6 +290,11 @@ $(function(){
   $('#edit_event_form').on('submit', function(e){
     var startDate = $('#edit_start_date').val();
     var endDate = $('#edit_end_date').val();
+    if ($('#edit_title').val() === 'OTHERS' && !$('#edit_other_title').val().trim()) {
+      e.preventDefault();
+      showEventMessage('Missing Title', 'Please enter a title for the other event.');
+      return;
+    }
     if (!isDateRangeValid(startDate, endDate)) {
       e.preventDefault();
       showEventMessage('Invalid Dates', 'End date must be the same as or after start date.');
@@ -266,7 +309,7 @@ $(function(){
     }
 
     $('#edit_event_id').val(id);
-    $('#edit_title').val($(this).data('title') || '');
+    applyEventTitle('#edit_title', '#edit_other_title', $(this).data('title') || '');
     $('#edit_description').val($(this).data('description') || '');
     $('#edit_start_date').val($(this).data('start') || '');
     $('#edit_end_date').val($(this).data('end') || '');

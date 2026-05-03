@@ -7,9 +7,14 @@
 
 	if(isset($_POST['submit'])){
 		$TITLE = trim((string)($_POST['title'] ?? ''));
+		$OTHER_TITLE = trim((string)($_POST['other_title'] ?? ''));
 		$DESCRIPTION = trim((string)($_POST['description'] ?? ''));
 		$DATE = trim((string)($_POST['start_datetime'] ?? ''));
 		$TIME = trim((string)($_POST['end_datetime'] ?? ''));
+
+		if($TITLE === 'OTHERS'){
+			$TITLE = $OTHER_TITLE;
+		}
 
 		if($TITLE === '' || $DESCRIPTION === '' || $DATE === '' || $TIME === ''){
 			$_SESSION['error'] = 'Please fill in all required fields.';
