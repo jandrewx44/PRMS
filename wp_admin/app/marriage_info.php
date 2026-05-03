@@ -190,7 +190,8 @@ if(isset($_GET['q'])){
               </div><!-- /.card-body -->
               <div class="card-footer text-muted">
               <div class="float-right">
-				      <a href="<?='marriage_view.php?year='.$_GET['year'];?>" class="btn bg-gradient-maroon btn-sm"><i class="fa-solid fa fa-arrow-left text-white"></i> BACK</a>
+        <a data-mytooltip="tooltip" data-placement="top" title="PRINT" href="<?='marriage-certification-pdf-print.php?MARRIAGEID='.$ID;?>" target="_blank" class="btn bg-gradient-teal btn-sm"><i class="fa-solid fa fa-print"></i> Print</a>
+        <a href="<?='marriage_view.php?year='.$_GET['year'];?>" class="btn bg-gradient-maroon btn-sm"><i class="fa-solid fa fa-arrow-left text-white"></i> BACK</a>
             </div>
           	</div>
             </div>
