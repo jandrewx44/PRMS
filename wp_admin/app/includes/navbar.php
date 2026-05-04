@@ -35,10 +35,10 @@
       </li>
 	  <div class="btn-group">
 	<button type="button" class="btn bg-default">
-      <span class="hidden-xs text-white"><?php echo $user['LASTNAME'].', '.$user['FIRSTNAME']; ?></span>
+      <span class="hidden-xs text-white"><?php echo htmlspecialchars(trim(($user['LASTNAME'] ?? '').', '.($user['FIRSTNAME'] ?? ''), ', ')); ?></span>
 	</button>
       
-      <?php if($user['ROLE']=="DEMO") { ?>
+      <?php if(($user['ROLE'] ?? '')=="DEMO") { ?>
        
        <?php }else{ ?>
 	<button type="button" class="btn bg-default dropdown-toggle dropdown-icon text-white" data-toggle="dropdown">

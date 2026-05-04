@@ -19,6 +19,7 @@
 			$sql= "INSERT INTO tbl_users(FIRSTNAME, MI, LASTNAME, DESIGNATION, USERNAME, PASSWORD, ROLE, STATUS, PROFILE)VALUES('$FIRSTNAME','$MI','$LASTNAME','$DESIGNATION','$USERNAME','$PASSWORD','$ROLE',1,'')";
 			if($conn->query($sql)){
 				$_SESSION['success'] = 'Account have been created.';
+				audit_log($conn,$user,'User Added',"$FIRSTNAME $MI $LASTNAME ($USERNAME) $ROLE");
 			}
 			else{
 				$_SESSION['error'] = $conn->error;

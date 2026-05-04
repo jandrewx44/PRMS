@@ -6,6 +6,7 @@
 		$sql = "UPDATE tbl_users SET STATUS='0' WHERE ID=".$_GET['confpending'];
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'Successfully Updated!';
+			audit_log($conn,$user,'User Disabled',audit_target_user($conn,$_GET['confpending']));
 			
 		}
 		else{

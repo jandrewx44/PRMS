@@ -18,6 +18,7 @@ if (isset($_POST['btnsubmit'])) {
 		WHERE ID = '$ID'";
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'information updated successfully';
+			audit_log($conn,$user,'User Updated',"$FIRSTNAME $MI $LASTNAME (ID: $ID) $ROLE");
 		}
 		else{
 			$_SESSION['error'] = $conn->error;

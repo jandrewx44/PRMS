@@ -12,7 +12,7 @@
 				      <div class="row">
 				        <div class="col-md-12">
                 <div class="form-group">
-                <input type="hidden" class="form-control" name="ID" value="<?php echo $user['ID']; ?>">
+                <input type="hidden" class="form-control" name="ID" value="<?php echo htmlspecialchars($user['ID'] ?? ''); ?>">
                     <label for="photo" class="control-label">Photo:</label>
                     <input class="form-control" name="image" type="file" id="formFile" onchange="preview()"><br>
                    <img id="frame" src="" class="img-fluid " style="border-radius:10px">
@@ -68,28 +68,28 @@
                   	<label for="username" class="col-sm-3 control-label">USERNAME</label>
 
                   	<div class="col-sm-12">
-                    	<input type="text" class="form-control" name="USERNAME" value="<?php echo $user['USERNAME']; ?>">
+                    	<input type="text" class="form-control" name="USERNAME" value="<?php echo htmlspecialchars($user['USERNAME'] ?? ''); ?>">
                   	</div>
                 </div>
                 <div class="form-group">
                     <label for="password" class="col-sm-3 control-label">PASSWORD</label>
 
                     <div class="col-sm-12"> 
-                      <input type="password" class="form-control" name="PASSWORD" value="<?php echo $user['PASSWORD']; ?>">
+                      <input type="password" class="form-control" name="PASSWORD" value="<?php echo htmlspecialchars($user['PASSWORD'] ?? ''); ?>">
                     </div>
                 </div>
                 <div class="form-group">
                   	<label for="firstname" class="col-sm-3 control-label">FIRST NAME</label>
 
                   	<div class="col-sm-12">
-                    	<input type="text" class="form-control" name="FIRSTNAME" value="<?php echo $user['FIRSTNAME']; ?>">
+                    	<input type="text" class="form-control" name="FIRSTNAME" value="<?php echo htmlspecialchars($user['FIRSTNAME'] ?? ''); ?>">
                   	</div>
                 </div>
                 <div class="form-group">
                   	<label for="lastname" class="col-sm-3 control-label">M.I</label>
 
                   	<div class="col-sm-12">
-                    	<input type="text" class="form-control" name="MI" value="<?php echo $user['MI']; ?>">
+                    	<input type="text" class="form-control" name="MI" value="<?php echo htmlspecialchars($user['MI'] ?? ''); ?>">
                   	</div>
                 </div>
 
@@ -97,7 +97,7 @@
                   	<label for="lastname" class="col-sm-3 control-label">LAST NAME</label>
 
                   	<div class="col-sm-12">
-                    	<input type="text" class="form-control" name="LASTNAME" value="<?php echo $user['LASTNAME']; ?>">
+                    	<input type="text" class="form-control" name="LASTNAME" value="<?php echo htmlspecialchars($user['LASTNAME'] ?? ''); ?>">
                   	</div>
                 </div>
     

@@ -28,6 +28,7 @@
 			$sql = "UPDATE tbl_users SET USERNAME = '$username', PASSWORD = '$password', FIRSTNAME = '$firstname', LASTNAME = '$lastname', MI = '$mi' WHERE ID = '".$user['ID']."'";
 			if($conn->query($sql)){
 				$_SESSION['success'] = 'Admin profile updated successfully';
+				audit_log($conn,$user,'Profile Updated',"$firstname $mi $lastname ($username)");
 			}
 			else{
 				$_SESSION['error'] = $conn->error;

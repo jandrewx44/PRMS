@@ -30,6 +30,7 @@ if(isset($_POST["upload"])){
              
             if($insert){ 
                 $_SESSION['success'] = "File uploaded successfully."; 
+                audit_log($conn,$user,'Profile Photo Updated',audit_target_user($conn,$ID));
             }else{ 
                 $_SESSION['error'] = "File upload failed, please try again."; 
             }  

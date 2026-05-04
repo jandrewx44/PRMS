@@ -6,6 +6,7 @@
 		$sql = "UPDATE tbl_users SET STATUS='1' WHERE ID=".$_GET['confirmed'];
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'Successfully Confirmed!';
+			audit_log($conn,$user,'User Enabled',audit_target_user($conn,$_GET['confirmed']));
 			
 		}
 		else{

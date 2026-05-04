@@ -81,17 +81,17 @@
                   </thead>
                   <tbody>
 				        	<?php
-                    $sql = "SELECT * FROM history ORDER BY date ASC";
+                    $sql = "SELECT * FROM history ORDER BY date DESC";
                     $query = $conn->query($sql);
 				        	$cnt=1;
                     while($row = $query->fetch_assoc()){
                       ?>
                         <tr>
                           <td><?=$cnt; ?></td>
-                          <td><?=$row['date']; ?></td>
-                          <td><?=$row['action']; ?></td>
-                           <td><?=$row['data']; ?></td>
-                           <td><?=$row['user']; ?></td>
+                          <td><?=htmlspecialchars($row['date']); ?></td>
+                          <td><?=htmlspecialchars($row['action']); ?></td>
+                           <td><?=htmlspecialchars($row['data']); ?></td>
+                           <td><?=htmlspecialchars($row['user']); ?></td>
                         </tr>
                       <?php
 					    $cnt++;

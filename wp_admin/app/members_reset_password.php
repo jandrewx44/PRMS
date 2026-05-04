@@ -17,6 +17,7 @@
 		$sql = "UPDATE tbl_users SET PASSWORD='$randomPass' WHERE ID=".$_GET['resetpass'];
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'Successfully reset!';
+			audit_log($conn,$user,'User Password Reset',audit_target_user($conn,$_GET['resetpass']));
 			
 		}
 		else{
