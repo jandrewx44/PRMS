@@ -172,6 +172,11 @@ $(document).ready(function(){
             showReviewMessage('Incomplete Form', 'Please fill both fields.');
             return false;
         }
+        else if(rating_data < 1)
+        {
+            showReviewMessage('Incomplete Form', 'Please select a star rating.');
+            return false;
+        }
         else
         {
             $.ajax({

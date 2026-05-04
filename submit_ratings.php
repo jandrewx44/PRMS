@@ -67,8 +67,7 @@ try {
 		return $default;
 	};
 
-	// Coolify/container setup: use service hostname from env, never 127.0.0.1.
-	$dbHost = $getEnvValue(array('DB_HOST', 'MYSQL_HOST', 'COOLIFY_DATABASE_HOST'), 'mysql');
+	$dbHost = $getEnvValue(array('DB_HOST', 'MYSQL_HOST', 'COOLIFY_DATABASE_HOST'), 'localhost');
 	$dbPort = $getEnvValue(array('DB_PORT', 'MYSQL_PORT', 'COOLIFY_DATABASE_PORT'), '3306');
 	$dbName = $getEnvValue(array('DB_DATABASE', 'MYSQL_DATABASE', 'DB_NAME'), '2906898_mpcdatabase');
 	$dbUser = $getEnvValue(array('DB_USERNAME', 'MYSQL_USER', 'DB_USER'), 'root');
@@ -93,13 +92,14 @@ try {
 			':user_name' => $userName,
 			':user_rating' => $userRating,
 			':user_review' => $userReview,
+			':user_email' => '',
 			':datetime' => time()
 		);
 
 		$query = "
 		INSERT INTO tbl_review 
-		(user_name, user_rating, user_review, datetime) 
-		VALUES (:user_name, :user_rating, :user_review, :datetime)
+		(user_name, user_rating, user_review, user_email, datetime)
+		VALUES (:user_name, :user_rating, :user_review, :user_email, :datetime)
 		";
 
 		$statement = $connect->prepare($query);
