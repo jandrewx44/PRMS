@@ -103,7 +103,6 @@
                             <div class="btn-group">
                             <a href="<?='defunctorum_update.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-primary btn-sm"><i class="fa-solid fa fa-edit"></i> </a>
                             <a href="<?='defunctorum_info.php?q='.urlencode(base64_encode($row['ID']));?>&year=<?=$ShowYear;?>" class="btn btn-success btn-sm"><i class="fa-solid fa fa-eye"></i> </a>
-                            <a data-mytooltip="tooltip" data-placement="top" title="DELETE RECORD" href="<?='defunctorum_delete.php?q='.$row['ID'].'&year='.$ShowYear.'&return=defunctorum_view.php?year='.$ShowYear;?>" class="btn btn-danger btn-sm" onclick="return confirm('Delete this record?');"><i class="fa-solid fa fa-trash"></i> </a>
                           </div>
                           </td>
                         </tr>
