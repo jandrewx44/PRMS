@@ -115,7 +115,7 @@ $(function () {
 </script>
 
 <script type="text/javascript">   
-    $("#link2").click(function(){
+   $("#link2").click(function(event){
     if( $("#termsCheckbox").is(':checked') ){
       
     }else {
@@ -125,7 +125,7 @@ $(function () {
 
   });
 
-  $("#next").click(function(){
+  $("#next").click(function(event){
 
     if (!$("input[name='SELECTED_TIME']:checked").val()) {
          $(function() {
@@ -218,7 +218,7 @@ $(function () {
 </script>
 <script type="text/javascript">
  // Bootstrap 4 Validation
- $(".needs-validation").submit(function () {
+ $(".needs-validation").submit(function (event) {
     var form = $(this);
     if (form[0].checkValidity() === false) {
       event.preventDefault();
@@ -342,7 +342,7 @@ $(function () {
 
 <script type="text/javascript">
  // Bootstrap 4 Validation
- $(".view_form").submit(function () {
+ $(".view_form").submit(function (event) {
     var form = $(this);
     if (form[0].checkValidity() === false) {
       event.preventDefault();

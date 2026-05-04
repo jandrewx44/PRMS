@@ -7,21 +7,24 @@ $offset	= $CIcnt + 6;
 $month = date("m"); // e.g. 09 
 $year = date("y"); // e.g. 23  
 
-// Get the last bill number from the database 
-$stmt =$conn->prepare("SELECT AUTO_NUMBER FROM tbl_autonumber ORDER BY AUTO_NUMBER DESC"); 
-$stmt->execute();
-$result=$stmt->get_result();
-$row = $result->fetch_assoc(); 
-$lastid = $row['AUTO_NUMBER']; 	 
+// Get the last reference number for this month/year only.
+$number = "$CI-$month$year-0001";
+$pattern = "$CI-$month$year-%";
+$stmt = $conn->prepare("SELECT AUTO_NUMBER FROM tbl_autonumber WHERE AUTO_NUMBER LIKE ? ORDER BY AUTO_NUMBER DESC LIMIT 1");
+if ($stmt) {
+ $stmt->bind_param('s', $pattern);
+ $stmt->execute();
+ $result = $stmt->get_result();
+ $row = $result ? $result->fetch_assoc() : null;
+ $lastid = $row['AUTO_NUMBER'] ?? '';
 
-if(empty($lastid) || (substr($lastid, $CIcnt + 1, 2) != $month) || (substr($lastid, $CIcnt + 3, 2) != $year)) { 
- $number = "$CI-$month$year-0001"; 
-} else { 
- // Increment the last four digits by one 
- $idd = substr($lastid, $offset); // e.g. 0001 
- $id = str_pad($idd + 1, 4, 0, STR_PAD_LEFT); // e.g. 0002 
- $number = "$CI-$month$year-$id"; 
-} 
+ if (!empty($lastid)) {
+  // Increment the last four digits by one.
+  $idd = substr($lastid, $offset); // e.g. 0001
+  $id = str_pad((int)$idd + 1, 4, 0, STR_PAD_LEFT); // e.g. 0002
+  $number = "$CI-$month$year-$id";
+ }
+}
 ?>
 
   <!-- Google Font: Source Sans Pro -->

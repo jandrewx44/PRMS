@@ -108,18 +108,6 @@
 				          	$cnt=1;
                     if($result->num_rows >0 ){
                     while($row = $result->fetch_assoc()){
-                      $DATE_ACTION=$row['DATE_ACTION'];
-                      $date = new DateTime($DATE_ACTION);
-                      $date->modify('+1 day');
-                      // $date->format('Y-m-d')
-                      $Rejected=3;
-                      $REMARKS="This is system automation";
-                      if($date->format('Y-m-d')<=date("Y-m-d")){
-                        $book_reject=$conn->prepare('UPDATE tbl_appointment SET APP_STATUS=?, REMARKS=?');
-                        $book_reject->bind_param('ss',$Rejected,$REMARKS,);
-                        $book_reject->execute();
-                      }
-
                       if($row['APP_STATUS']=="Pending"){
                         $STATUS='<label class="text-warning">Pending</label>';
                        }elseif($row['APP_STATUS']=="Approved"){

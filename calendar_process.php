@@ -34,6 +34,9 @@ include "wp_admin/app/includes/conn.php";
                 $AUTO_NUMBER = "$prefix-$month$year-0001";
             }
             $TERMS_OF_SERVICE=$_POST['TERMS_OF_SERVICE'];
+            $APP_STATUS = 'Pending';
+            $DATE_ACTION = '';
+            $DATE_COMPLETED = '';
 
 
             $UPLOAD_IDS = basename($_FILES["UPLOAD_ID"]["name"]); 
@@ -58,8 +61,8 @@ include "wp_admin/app/includes/conn.php";
                 // $UPLOAD_WITH_SELFIE = addslashes(file_get_contents($WITH_SELFIE)); 
                 $UPLOAD_WITH_SELFIE = file_get_contents($WITH_SELFIE);
 
-                $stmt=$conn->prepare("INSERT INTO `tbl_appointment`(`BOOK_DATE`, `BOOK_TIME`, `FIRSTNAME`, `MIDDLENAME`, `LASTNAME`, `GENDER`, `DATE_OF_BIRTH`, `AGE`, `MOBILE`, `ADDRESS`, `REMARKS`, `VALID_ID_NUMBER`, `UPLOAD_ID`, `UPLOAD_WITH_SELFIE`, `TERMS_OF_SERVICE`,`AUTO_NUMBER`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                $stmt->bind_param('ssssssssssssssss',$BOOK_DATE,$BOOK_TIME,$FIRSTNAME,$MIDDLENAME,$LASTNAME,$GENDER,$DATE_OF_BIRTH,$AGE,$MOBILE,$ADDRESS,$PURPOSE,$VALID_ID_NUMBER,$UPLOAD_ID,$UPLOAD_WITH_SELFIE,$TERMS_OF_SERVICE,$AUTO_NUMBER);
+                $stmt=$conn->prepare("INSERT INTO `tbl_appointment`(`BOOK_DATE`, `BOOK_TIME`, `FIRSTNAME`, `MIDDLENAME`, `LASTNAME`, `GENDER`, `DATE_OF_BIRTH`, `AGE`, `MOBILE`, `ADDRESS`, `REMARKS`, `VALID_ID_NUMBER`, `UPLOAD_ID`, `UPLOAD_WITH_SELFIE`, `TERMS_OF_SERVICE`, `AUTO_NUMBER`, `APP_STATUS`, `DATE_ACTION`, `DATE_COMPLETED`)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                $stmt->bind_param('sssssssssssssssssss',$BOOK_DATE,$BOOK_TIME,$FIRSTNAME,$MIDDLENAME,$LASTNAME,$GENDER,$DATE_OF_BIRTH,$AGE,$MOBILE,$ADDRESS,$PURPOSE,$VALID_ID_NUMBER,$UPLOAD_ID,$UPLOAD_WITH_SELFIE,$TERMS_OF_SERVICE,$AUTO_NUMBER,$APP_STATUS,$DATE_ACTION,$DATE_COMPLETED);
                 if($stmt->execute()){
 					$NOTFICATION_SMS ="Hi $LASTNAME , we received your appointment request for date: $BOOK_DATE  $BOOK_TIME Ref: $AUTO_NUMBER. It’s currently pending approval. We’ll update you shortly. St.Philip Benizi Parish";
                     $response = [
